@@ -47,6 +47,7 @@ const builtInScenes={
  work:{ancient:'assets/scenes/work_ancient.png',early:'assets/scenes/work_industrial.png',future:'assets/scenes/work_future.png'},
  tower:{ancient:'assets/scenes/tower_ancient.png',early:'assets/scenes/tower_ruined.png',modern:'assets/scenes/tower_modern.png',future:'assets/scenes/tower_future.png'}
 };
+const riverScene=`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700"><defs><linearGradient id="s" x2="0" y2="1"><stop stop-color="#f8d7a9"/><stop offset=".55" stop-color="#eab07e"/><stop offset="1" stop-color="#8aa0a0"/></linearGradient><linearGradient id="w"><stop stop-color="#8da6aa"/><stop offset="1" stop-color="#d8c5a3"/></linearGradient></defs><rect width="900" height="700" fill="url(#s)"/><circle cx="650" cy="150" r="75" fill="#fff1ce" opacity=".75"/><path d="M0 390 Q180 330 350 390 T700 375 T900 390 V700 H0Z" fill="url(#w)"/><path d="M0 430 Q200 380 410 435 T900 420" fill="none" stroke="#f7e4c2" stroke-width="12" opacity=".55"/><path d="M0 335 Q170 290 320 330 L320 365 Q150 340 0 390Z" fill="#9c7c5d"/><path d="M900 330 Q760 290 620 335 L620 370 Q780 340 900 390Z" fill="#8f765d"/><g fill="#6f755f"><circle cx="90" cy="285" r="48"/><circle cx="160" cy="300" r="55"/><circle cx="780" cy="285" r="55"/><circle cx="845" cy="305" r="45"/></g></svg>`)}`;
 function eraKey(){
  if(typeof S!=='undefined'&&Number.isFinite(S.year)){
    if(S.year<2200)return'modern';
@@ -64,7 +65,7 @@ function builtInFor(scene){
  if(scene==='work')return pick('work');
  if(scene==='home'||scene==='room'||scene==='dining')return pick('dining',e==='future'?'modern':e);
  if(scene==='market'||scene==='street'||scene==='rain')return pick('dining',e==='future'?'modern':e);
- if(scene==='river')return pick('tower',e);
+ if(scene==='river')return riverScene;
  return pick('dining','modern')
 }
 const placeNames={work:'工作場所',room:'河東小屋',street:'白河城',shop:'藥店',river:'白河河岸',market:'中央市集',home:'家中',rain:'白河城・雨夜',museum:'新白河博物館',archive:'灰港檔案館',tower:'北塔',grave:'舊墓園'};
@@ -108,14 +109,14 @@ const ENDINGS=[
 const GOD_NPC={name:'神明貓貓',image:'assets/npc/god_maomao.png'};
 const first=[
 ['tower','白色身影','你只是想抄近路回家，卻在北塔附近看見一個從未見過的女孩。\\n\\n她站在午後的光裡，像是在等人。你明明確定彼此從未見過，她看見你時卻輕聲說：「原來是現在的你。」\\n\\n你還來不及追問，她只告訴你一個名字——貓貓。',['問她是不是認識自己','她沒有正面回答，只看著你笑了一下：「現在還不用知道。」你莫名把這句話記得很清楚。',{daily:2},'met_god_maomao'],['問她為什麼在這裡','「等一個人。」她說。你問等誰，她的目光卻落在你身上。片刻後，她轉身離開。',{daily:2},'met_god_maomao']],
-['room','春天的第一個早晨','窗外有人推著早餐攤經過。今天沒有什麼大事。\\n\\n老闆下午才需要你到藥店幫忙，上午完全屬於自己。',['再睡一下','你醒來時已經接近中午。難得什麼都沒有耽誤，只是錯過了早餐。',{daily:2}],['去街上吃早餐','你在熟悉的小攤坐下。老闆娘記得你不要蔥，還多塞了一塊餅給你。',{daily:4,money:-2}]],
+['room','春天的第一個早晨','窗外有人推著早餐攤經過。今天沒有什麼大事。\\n\\n老闆下午才需要你到藥店幫忙，上午完全屬於自己。',['再睡一下','你醒來時已經接近中午。雖然休息夠了，但整天的生活節奏都有些散掉。',{daily:-2}],['去街上吃早餐','你在熟悉的小攤坐下。老闆娘記得你不要蔥，還多塞了一塊餅給你。',{daily:4,money:-2}]],
 ['street','街角的新鄰居','搬貨的人把整條巷子堵得亂七八糟。一個陌生女孩抱著紙箱，差點撞上你。\\n\\n「抱歉！我剛搬來。」',['幫她把箱子扶好','你順手幫她把箱子搬到門口。她叫米婭，住得離你不遠。',{daily:4},'met_mia'],['只是讓開道路','你點點頭，讓她先過。這只是普通的一次擦肩。',{daily:1}]],
-['shop','忙碌的午後','藥店今天來了不少人。老闆一邊整理藥材，一邊抱怨你切藥草切得太慢。\\n\\n「再這樣下去，晚飯都別吃了。」',['認真把工作做完','你一直忙到夕陽落下。老闆嘴上嫌棄，最後還是多算了工錢。',{daily:3,money:7}],['偷偷提早溜走','你從後門溜了。今晚多出一段完全屬於自己的時間。',{daily:2,money:-2}]],
+['shop','忙碌的午後','藥店今天來了不少人。老闆一邊整理藥材，一邊抱怨你切藥草切得太慢。\\n\\n「再這樣下去，晚飯都別吃了。」',['認真把工作做完','你一直忙到夕陽落下。老闆嘴上嫌棄，最後還是多算了工錢。',{daily:3,money:7}],['偷偷提早溜走','你從後門溜了。今晚多出一段自己的時間，但工作留下的麻煩還是得有人收拾。',{daily:-3,money:-2}]],
 ['market','休假的市集','今天不用工作。市集裡有賣花的、唱歌的、吵架的，還有人正在猜杯子底下藏著哪顆豆子。',['花點錢玩一輪','你輸掉兩枚銀幣，卻莫名其妙和旁邊的人笑成一團。',{daily:4,money:-2}],['把錢留下來','你只是逛了一圈。回家時口袋裡的錢一枚也沒少。',{daily:2}]],
 ['river','河岸上的少年','送藥途中，你看見一名少年跪在泥地，手裡攥著被扯斷的錢袋。\\n\\n遠處有人喊著抓賊。少年喘著氣說：「我妹妹快死了。」',['把他交給追來的人','你叫住追來的人。少年被帶走以前看了你很久。\\n\\n當下，你只覺得自己做了應該做的事。',{daily:-1},'river_caught'],['替他付藥錢','你把今天的工錢塞進他手裡。少年愣住，最後只說了一聲謝謝。\\n\\n你沒有問他的名字。',{daily:4,money:-10},'river_help']],
-['home','晚飯桌上的小事','今天的湯有點鹹。家裡的人互相推卸到底是誰多放了一匙鹽。\\n\\n窗外很安靜。',['加入這場無聊的爭論','最後誰也沒承認，但你們把整鍋湯吃完了。',{daily:5}],['吃完就回房間','你還有自己的事情要做。這只是再普通不過的一晚。',{daily:1}]],
-['street','一場突然的大雨','你沒帶傘。屋簷下已經擠了好幾個陌生人。米婭站在另一頭，看見你後朝你揮手。',['跑過去和她一起躲雨','你們聊到雨停。她說自己其實很怕雷，但剛才一次都沒表現出來。',{daily:5},'mia_close'],['冒雨跑回家','鞋子全濕了。第二天你還因此打了好幾個噴嚏。',{daily:1}]],
-['shop','老闆的舊木盒','打掃倉庫時，你翻到一只很舊的木盒。老闆說是前任店主留下的垃圾，讓你自己決定怎麼處理。',['留下來裝自己的東西','你在盒底刻下一道很小的記號。以後如果看到，你一定認得。',{daily:2},'woodbox'],['直接丟掉','它只是個舊盒子。你把它扔進後巷。',{daily:1}]],
+['home','晚飯桌上的小事','今天的湯有點鹹。家裡的人互相推卸到底是誰多放了一匙鹽。\\n\\n窗外很安靜。',['加入這場無聊的爭論','最後誰也沒承認，但你們把整鍋湯吃完了。',{daily:5}],['吃完就回房間','你還有自己的事情要做。門關上後，外面的笑聲很快就聽不清了。',{daily:-2}]],
+['street','一場突然的大雨','你沒帶傘。屋簷下已經擠了好幾個陌生人。米婭站在另一頭，看見你後朝你揮手。',['跑過去和她一起躲雨','你們聊到雨停。她說自己其實很怕雷，但剛才一次都沒表現出來。',{daily:5},'mia_close'],['冒雨跑回家','鞋子全濕了。第二天你還因此打了好幾個噴嚏，原本的安排也被打亂。',{daily:-2}]],
+['shop','老闆的舊木盒','打掃倉庫時，你翻到一只很舊的木盒。老闆說是前任店主留下的垃圾，讓你自己決定怎麼處理。',['留下來裝自己的東西','你在盒底刻下一道很小的記號。以後如果看到，你一定認得。',{daily:2},'woodbox'],['直接丟掉','它只是個舊盒子。你把它扔進後巷，回頭卻莫名覺得今天少留下了什麼。',{daily:-1}]],
 ['river','河邊的約定','傍晚，你和熟人坐在河堤上。對方突然問：「你有想過十年後會在哪嗎？」',['說一個很普通的未來','「大概還在這裡吧。」你笑了。當時的你真的相信未來會這麼普通。',{daily:5},'ordinary_future'],['說想離開白河','你望著河流下游。世界應該比這座城大得多。',{daily:2},'leave_dream']],
 ['home','沒有預兆的一天','早晨和平常完全一樣。\\n\\n你甚至已經想好晚上要吃什麼。\\n\\n沒有人知道，這會是你最後一個普通的早晨。',['照原本的安排出門','你關上門，走進熟悉的街道。',{daily:2},'last_normal'],['臨時留下來陪家人','你晚了半個時辰才出門。這個微小的改變，讓很多事情跟原本不一樣。',{daily:5},'last_delay']]
 ];
@@ -134,7 +135,44 @@ const later=[
 function fresh(){return{setup:false,playerName:'',gender:'',life:0,year:2026,age:16,birthYear:2010,dead:null,day:1,slot:0,total:1,index:0,r:{daily:50,memory:0,intervene:0,anomaly:0},money:36,flags:{},images:{},history:[],log:[],result:null}}
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){S=fresh()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
-function ev(){let pool=S.life===0?first:S.life===1?second:later;return pool[S.index%pool.length]}
+
+const CAUSAL_EVENTS=[
+ {id:'maomao_first',from:2026,to:2026,life:0,event:first[0]},
+ {id:'old_box',from:2040,to:2046,event:['home','沒有寄件人的盒子','門口放著一只沒有寄件人的舊盒子。盒蓋內側刻著一個你看不懂的記號。',['把盒子留下','你把盒子收進櫃子。多年後，也許會有人再次打開它。',{daily:1},'kept_old_box'],['丟掉盒子','你把它當成無主雜物處理掉。這個決定沒有立刻造成任何變化。',{daily:-1},'discarded_old_box']]},
+ {id:'river_record',from:2080,to:2086,event:['river','河岸的舊紀錄','整修河岸時，有人從地基裡找到一塊刻著舊名字的金屬牌。那個名字讓你產生難以解釋的熟悉感。',['抄下名字','你把名字記進日誌。',{memory:4},'recorded_river_name'],['不去深究','你告訴自己只是巧合。',{anomaly:-2,daily:2},'ignored_river_name']]},
+ {id:'archive_gap',from:2160,to:2168,event:['archive','缺失的八年','檔案館的一批資料中，有八年的紀錄被整齊地抽空了。奇怪的是，索引仍指向那些不存在的頁面。',['追查索引','你留下了這個異常的線索。',{memory:3,anomaly:3},'found_archive_gap'],['當成整理錯誤','你沒有把時間花在這件事上。',{daily:2,anomaly:-1},'dismissed_archive_gap']]},
+ {id:'tower_rebuild',from:2280,to:2288,event:['tower','北塔重建案','城市決定是否保留北塔舊址。這次表決只會發生一次，而結果會改變之後數百年的城市景觀。',['支持保留','北塔舊址被納入保存計畫。',{intervene:2,daily:-1},'tower_preserved'],['支持拆除','舊址被讓給新的城市工程。',{daily:2,intervene:-1},'tower_removed']]},
+ {id:'identity_archive',from:2440,to:2448,event:['archive','重複的名字','一套跨世紀身分資料出現不可能的重複特徵。你第一次看到足以把「熟悉感」變成證據的東西。',['保存副本','你秘密留下資料副本。',{memory:5,anomaly:5},'identity_copy'],['刪除副本','你決定不讓這份資料繼續存在。',{memory:-2,anomaly:-2},'identity_deleted']]},
+ {id:'future_protocol',from:2780,to:2788,event:['work','記憶保存協議','新的記憶保存技術即將被寫入公共制度。你知道這項決定可能影響3026年的人如何理解「一個人」。',['支持保存','制度開始保存更完整的個人記憶。',{memory:4,intervene:3},'memory_protocol'],['反對保存','制度限制了跨世代記憶保存。',{daily:3,memory:-2},'memory_restricted']]}
+];
+
+function markExpiredCausalEvents(){
+ for(const c of CAUSAL_EVENTS){
+   if(S.year>c.to && !S.worldEvents[c.id]){
+     S.worldEvents[c.id]={status:'missed',year:c.to};
+   }
+ }
+}
+function dueCausalEvent(){
+ markExpiredCausalEvents();
+ for(const c of CAUSAL_EVENTS){
+   if(S.worldEvents[c.id])continue;
+   if(c.life!=null && S.life!==c.life)continue;
+   if(S.year>=c.from && S.year<=c.to)return c;
+ }
+ return null;
+}
+
+function ev(){
+ const causal=dueCausalEvent();
+ if(causal)return causal.event;
+ if(S.life===0){
+   const ordinary=first.slice(1);
+   return ordinary[Math.max(0,S.index-1)%ordinary.length];
+ }
+ let pool=S.life===1?second:later;
+ return pool[S.index%pool.length]
+}
 function unlocked(k){if(k==='daily')return true;if(k==='memory')return S.life>=1&&(S.flags.first_dejavu||S.flags.box_memory||S.r.memory>0);if(k==='anomaly')return S.life>=1&&S.r.anomaly>0;if(k==='intervene')return S.life>=2&&S.flags.accept_rebirth}
 function state(v){return v<=15?'極低':v<=35?'偏低':v<65?'平衡':v<85?'偏高':'極高'}
 function head(){
@@ -154,7 +192,12 @@ function image(scene,result=false){let im=result?$('ri'):$('img'),fb=result?$('r
 }else{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'}}
 function show(){head();if(S.result){showResult();return}let e=ev();$('card').classList.remove('hidden');$('result').classList.add('hidden');$('place').textContent=placeNames[e[0]];$('tag').textContent=S.life===0?'這一世的生活':S.life===1?'似曾相識':'輪迴中的一天';$('title').textContent=e[1].replaceAll('黎安',S.playerName||'黎安');$('story').textContent=cleanText(e[2].replaceAll('黎安',S.playerName||'黎安'));if(e[1]==='白色身影'){$('story').insertAdjacentHTML('afterend',`<div class="godNpc" id="godNpcCard"><img src="${GOD_NPC.image}" alt="神明貓貓"><div class="godNpcText"><div class="godNpcName">神明貓貓</div><div class="godNpcDesc">此時的你只知道，她是一個奇怪的陌生人。</div></div></div>`)}else{let g=$('godNpcCard');if(g)g.remove()}$('lb').textContent='← '+e[3][0];$('rb').textContent=e[4][0]+' →';$('lp').textContent=e[3][0];$('rp').textContent=e[4][0];image(e[0]);resetCard();log()}
 function apply(d){for(let k of ['daily','memory','intervene','anomaly'])if(d[k])S.r[k]=clamp(S.r[k]+d[k]);if(d.money)S.money=Math.max(0,S.money+d.money)}
-function choose(side){let e=ev(),o=side==='l'?e[3]:e[4];apply(o[2]||{});if(o[3])S.flags[o[3]]=true;S.result={label:o[0],text:o[1],delta:o[2]||{},scene:e[0]};S.log.unshift({day:S.day,label:o[0],text:o[1].split('\n')[0]});S.log=S.log.slice(0,7);save();show()}
+function choose(side){
+ const activeCausal=dueCausalEvent();
+ if(activeCausal){
+   S.worldEvents[activeCausal.id]={status:'resolved',year:S.year,life:S.life,choice:side};
+ }
+let e=ev(),o=side==='l'?e[3]:e[4];apply(o[2]||{});if(o[3])S.flags[o[3]]=true;S.result={label:o[0],text:o[1],delta:o[2]||{},scene:e[0]};S.log.unshift({day:S.day,label:o[0],text:o[1].split('\n')[0]});S.log=S.log.slice(0,7);save();show()}
 function showResult(){let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
 function oldAgeDeath(){
  if(S.age<60)return false;
