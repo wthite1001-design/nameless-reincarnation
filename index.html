@@ -132,8 +132,9 @@ const later=[
 ['market','回到過去的鑰匙','你再次找到那只木盒。這一次，碰到它時周圍的聲音全部消失。\\n\\n你看見第一世的白河，就在一步之外。',['鬆開手','能回去，不代表應該回去。',{intervene:-3,daily:3}],['踏進那段時間','你真的回到了第一世。更可怕的是——年輕的黎安仍然存在。',{intervene:7,anomaly:6},'first_intervention']],
 ['tower','第零世的門','很多世以後，你找到一份比「第一世」更早的死亡紀錄。\\n\\n最後一句話是：「下一次，請不要再叫自己黎安。」',['到這裡就好','你轉身離開。答案仍在門後，但人生也仍在門外。',{daily:6,anomaly:-4}],['打開門','你終於知道：第一世不是開始，而是你第一次成功忘掉一切。',{memory:8,anomaly:9},'zero_truth']]
 ];
-function fresh(){return{setup:false,playerName:'',gender:'',life:0,year:2026,age:16,birthYear:2010,dead:null,day:1,slot:0,total:1,index:0,r:{daily:50,memory:0,intervene:0,anomaly:0},money:36,flags:{},images:{},history:[],log:[],result:null}}
+function fresh(){return{setup:false,playerName:'',gender:'',life:0,year:2026,age:16,birthYear:2010,dead:null,day:1,slot:0,total:1,index:0,r:{daily:50,memory:0,intervene:0,anomaly:0},money:36,flags:{},images:{},history:[],log:[],worldEvents:{},recentEvents:[],result:null}}
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){S=fresh()}
+S.worldEvents=S.worldEvents||{};S.recentEvents=S.recentEvents||[];
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 const CAUSAL_EVENTS=[
@@ -165,17 +166,26 @@ function dueCausalEvent(){
 
 function ev(){
  const causal=dueCausalEvent();
- if(causal)return causal.event;
- if(S.life===0){
-   const ordinary=first.slice(1);
-   return ordinary[Math.max(0,S.index-1)%ordinary.length];
- }
- let pool=S.life===1?second:later;
- return pool[S.index%pool.length]
+ if(causal&&Array.isArray(causal.event)&&causal.event.length>=5)return causal.event;
+
+ let pool;
+ if(S.life===0)pool=first.slice(1);
+ else if(S.life===1)pool=second;
+ else pool=later;
+
+ if(!Array.isArray(pool)||!pool.length)return first[1];
+
+ const recent=S.recentEvents||[];
+ let candidates=pool.filter(x=>x&&x[1]&&!recent.includes(x[1]));
+ if(!candidates.length)candidates=pool.filter(x=>x&&x[1]);
+ let e=candidates[Math.abs(S.index)%candidates.length];
+ return (e&&e.length>=5)?e:first[1]
 }
 function unlocked(k){if(k==='daily')return true;if(k==='memory')return S.life>=1&&(S.flags.first_dejavu||S.flags.box_memory||S.r.memory>0);if(k==='anomaly')return S.life>=1&&S.r.anomaly>0;if(k==='intervene')return S.life>=2&&S.flags.accept_rebirth}
 function state(v){return v<=15?'極低':v<=35?'偏低':v<65?'平衡':v<85?'偏高':'極高'}
 function head(){
+ S.worldEvents=S.worldEvents||{};S.recentEvents=S.recentEvents||[];
+ for(const k of ['daily','memory','intervene','anomaly'])if(!Number.isFinite(S.r[k]))S.r[k]=(k==='daily'?50:0);
  let names=[['日常','daily'],['追憶','memory'],['干預','intervene'],['異常','anomaly']];
  let visible=S.life===0?names.slice(0,1):names.filter(([n,k])=>k==='daily'||unlocked(k));
  $('routes').innerHTML=visible.map(([n,k])=>`<div><div class="rh"><span>${n}</span><span>${S.r[k]}</span></div><div class="track"><div class="fill" style="width:${S.r[k]}%"></div></div><div class="state">${state(S.r[k])}</div></div>`).join('');
@@ -193,11 +203,27 @@ function image(scene,result=false){let im=result?$('ri'):$('img'),fb=result?$('r
 function show(){head();if(S.result){showResult();return}let e=ev();$('card').classList.remove('hidden');$('result').classList.add('hidden');$('place').textContent=placeNames[e[0]];$('tag').textContent=S.life===0?'這一世的生活':S.life===1?'似曾相識':'輪迴中的一天';$('title').textContent=e[1].replaceAll('黎安',S.playerName||'黎安');$('story').textContent=cleanText(e[2].replaceAll('黎安',S.playerName||'黎安'));if(e[1]==='白色身影'){$('story').insertAdjacentHTML('afterend',`<div class="godNpc" id="godNpcCard"><img src="${GOD_NPC.image}" alt="神明貓貓"><div class="godNpcText"><div class="godNpcName">神明貓貓</div><div class="godNpcDesc">此時的你只知道，她是一個奇怪的陌生人。</div></div></div>`)}else{let g=$('godNpcCard');if(g)g.remove()}$('lb').textContent='← '+e[3][0];$('rb').textContent=e[4][0]+' →';$('lp').textContent=e[3][0];$('rp').textContent=e[4][0];image(e[0]);resetCard();log()}
 function apply(d){for(let k of ['daily','memory','intervene','anomaly'])if(d[k])S.r[k]=clamp(S.r[k]+d[k]);if(d.money)S.money=Math.max(0,S.money+d.money)}
 function choose(side){
+ let e=ev();
+ if(!e||e.length<5){S.index++;save();show();return}
  const activeCausal=dueCausalEvent();
- if(activeCausal){
+ let o=side==='l'?e[3]:e[4];
+ if(!o){S.index++;save();show();return}
+
+ apply(o[2]||{});
+ if(o[3])S.flags[o[3]]=true;
+ if(activeCausal&&activeCausal.event===e){
    S.worldEvents[activeCausal.id]={status:'resolved',year:S.year,life:S.life,choice:side};
  }
-let e=ev(),o=side==='l'?e[3]:e[4];apply(o[2]||{});if(o[3])S.flags[o[3]]=true;S.result={label:o[0],text:o[1],delta:o[2]||{},scene:e[0]};S.log.unshift({day:S.day,label:o[0],text:o[1].split('\n')[0]});S.log=S.log.slice(0,7);save();show()}
+
+ S.recentEvents=S.recentEvents||[];
+ S.recentEvents.push(e[1]);
+ if(S.recentEvents.length>3)S.recentEvents.shift();
+
+ S.result={label:o[0],text:o[1],delta:o[2]||{},scene:e[0]};
+ S.log.unshift({day:S.day,label:o[0],text:o[1].split('\n')[0]});
+ S.log=S.log.slice(0,7);
+ save();show()
+}
 function showResult(){let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
 function oldAgeDeath(){
  if(S.age<60)return false;
@@ -221,6 +247,9 @@ function next(){
  // A few choices are hidden instant-death risks; the option itself does not reveal this.
  if(dangerous&&/冒雨|繼續往下|踏進|沿著路/.test(dangerous)&&Math.random()<.12){die('意外死亡');return}
  S.year+=2;S.age+=2;S.day++;S.total++;S.index++;
+ // 路線值不是永久累加器：日常會隨時間慢慢回到中間值。
+ if(S.r.daily>50)S.r.daily=Math.max(50,S.r.daily-2);
+ else if(S.r.daily<50)S.r.daily=Math.min(50,S.r.daily+1);
  if(S.year>=3026){
  let ei=0;
  if(S.r.memory>=85&&S.r.intervene>=85&&S.r.anomaly>=85&&S.flags.met_god_maomao)ei=34;
