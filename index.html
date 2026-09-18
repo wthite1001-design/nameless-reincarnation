@@ -27,7 +27,7 @@
 
 .collectionBtn{border:1px solid #d2b895;background:#fff4df;border-radius:12px;padding:8px 11px;height:42px;margin-right:6px}.collectionOverlay{position:fixed;inset:0;z-index:50;background:linear-gradient(#f6dfba,#e9bc8d);padding:18px 13px;overflow:auto}.collectionBox{max-width:650px;margin:auto;background:#fff8e9;border:1px solid #d6b68e;border-radius:22px;padding:18px}.collectionHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.collectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.endingItem{border:1px solid #ddc2a0;background:#fff3df;border-radius:14px;padding:12px;text-align:left;min-height:92px}.endingItem.locked{opacity:.55}.endingNo{font-size:9px;color:#a3866e}.endingName{font:500 15px serif;margin-top:4px}.endingDesc{font-size:10px;line-height:1.6;color:#92755e;margin-top:5px}.closeCollection{border:1px solid #d2b895;background:#fff4df;border-radius:10px;padding:7px 10px}.endingDetail{margin-top:15px;border-top:1px solid #e2c8a6;padding-top:14px;white-space:pre-line;line-height:1.9;font-size:13px}
 </style></head>
-<body><section class="collectionOverlay hidden" id="collectionOverlay"><div class="collectionBox"><div class="collectionHead"><div><div class="over">ENDING ARCHIVE</div><div class="setupTitle" style="text-align:left">結局收藏</div><div class="setupIntro" id="collectionCount" style="text-align:left;margin:4px 0 0"></div></div><button class="closeCollection" id="closeCollection">關閉</button></div><div class="collectionGrid" id="collectionGrid"></div><div class="endingDetail hidden" id="endingDetail"></div></div></section><section class="deathOverlay hidden" id="deathOverlay"><div class="deathBox"><div class="over">這一世結束了</div><div class="setupTitle" id="deathName"></div><div class="deathDates" id="deathDates"></div><div class="deathCause" id="deathCause"></div><div class="setupIntro">世界沒有重來。它只是繼續向前。</div><button class="rebirthBtn" id="nextLife">進入下一世</button></div></section><section class="setupOverlay hidden" id="setup"><div class="setupBox"><div class="over" style="text-align:center">一段尚未開始的人生</div><div class="setupTitle">無名輪迴</div><div class="setupIntro">這一次，你會以什麼名字活下去？<br>第一世的你，還不知道未來會發生什麼。</div><label class="fieldLabel" for="playerName">玩家名字</label><input class="nameInput" id="playerName" maxlength="16" placeholder="輸入你的名字"><div class="fieldLabel">性別</div><div class="genderGrid"><button class="genderBtn" data-gender="女">女性</button><button class="genderBtn" data-gender="男">男性</button><button class="genderBtn" data-gender="其他">其他</button></div><button class="startBtn" id="startGame">開始第一世</button><div class="setupNote">每一世都可以使用新的名字與性別。死亡後，世界會繼續前進。</div></div></section><div class="app">
+<body><section class="collectionOverlay hidden" id="collectionOverlay"><div class="collectionBox"><div class="collectionHead"><div><div class="over">ENDING ARCHIVE</div><div class="setupTitle" style="text-align:left">結局收藏</div><div class="setupIntro" id="collectionCount" style="text-align:left;margin:4px 0 0"></div></div><button class="closeCollection" id="closeCollection">關閉</button></div><div class="collectionGrid" id="collectionGrid"></div><div class="endingDetail hidden" id="endingDetail"></div></div></section><section class="deathOverlay hidden" id="deathOverlay"><div class="deathBox"><div class="over">這一世結束了</div><div class="setupTitle" id="deathName"></div><div class="deathDates" id="deathDates"></div><div class="deathCause" id="deathCause"></div><div class="setupIntro">世界沒有重來。它只是繼續向前。</div><button class="rebirthBtn" id="nextLife">進入下一世</button></div></section><section class="setupOverlay hidden" id="setup"><div class="setupBox"><div class="over" style="text-align:center">一段尚未開始的人生</div><div class="setupTitle">無名輪迴</div><div class="setupIntro">這一次，你會以什麼名字活下去？<br>第一世的你，還不知道未來會發生什麼。</div><label class="fieldLabel" for="playerName">玩家名字</label><input class="nameInput" id="playerName" maxlength="16" placeholder="輸入你的名字"><div class="fieldLabel">性別</div><div class="genderGrid" id="genderChoice"><button class="genderBtn" data-gender="女">女性</button><button class="genderBtn" data-gender="男">男性</button></div><button class="startBtn" id="startGame">開始第一世</button><div class="setupNote" id="setupNote">性別只在第一世選擇一次，之後所有輪迴都固定不變；每次重生只需要重新取名字。</div></div></section><div class="app">
 <header class="top"><div><div class="over" id="life">第一世</div><div class="title">無名輪迴</div><div class="date" id="date"></div></div><div><button class="collectionBtn" id="openCollection">結局收藏</button><button class="ghost" id="reset">重開</button></div></header>
 <section class="status"><div class="routeGrid" id="routes"></div></section>
 <main id="game"><div class="stage">
@@ -96,17 +96,32 @@ const ENDINGS=[
 ['兩個自己','你回到過去，真正與仍活著的前世自己相遇。'],
 ['殺死昨日','你親手終止了一條原本屬於自己的過去。'],
 ['救下昨日','你救下了原本必定死亡的前世。'],
-['神明的陌生人','直到最後，你與神明貓貓仍只是擦肩而過。'],
-['千年之戀','你換過無數名字、模樣與性別。神明貓貓愛上的，始終是那個一次又一次回到她面前的靈魂。'],
-['被神記住的人','你的名字換了無數次，神明貓貓卻每一次都認出了你。'],
+['神明的陌生人','直到最後，你與神明仍只是擦肩而過。'],
+['千年之戀','你換過無數名字、模樣與性別。神明愛上的，始終是那個一次又一次回到她面前的靈魂。'],
+['被神記住的人','你的名字換了無數次，神明卻每一次都認出了你。'],
 ['神明的謊言','你發現貓貓曾刻意隱瞞輪迴最重要的一部分。'],
-['與神同行','輪迴終於停止。這一次你不再以新的名字出生，而是以完整的自己留在神明貓貓身邊，和她一起走向3026年之後。'],
+['與神同行','輪迴終於停止。這一次你不再以新的名字出生，而是以完整的自己留在神明身邊，和她一起走向3026年之後。'],
 ['告別神明','你理解一切後，主動結束與貓貓跨越千年的牽連。'],
 ['第零世','你找到了2026年以前、理應不存在的自己的紀錄。'],
 ['輪迴的起點','你終於知道第一次輪迴究竟為什麼發生。'],
 ['只有一次的今天','你理解了所有前世、干預與神明的真相，最後仍選擇讓世界只向前一次。']
 ];
-const GOD_NPC={name:'神明貓貓',image:'assets/npc/god_maomao.png'};
+const GOD_NPCS={
+ 女:{name:'神明余魚',image:'assets/npc/god_yuyu.png'},
+ 男:{name:'神明懋貓',image:'assets/npc/god_maomao.png'}
+};
+function currentGod(){return GOD_NPCS[S.gender]||GOD_NPCS.男}
+function godIntroEvent(){
+ const g=currentGod();
+ if(S.gender==='女')return ['tower','陌生的神明',
+ `你剛走出家門，就看見一名從未見過的男人站在前方。\n\n他沒有介紹自己的來歷，只在你靠近時微微抬眼，像是早就知道你會出現在這裡。\n\n「終於又見到你了。」\n\n你皺起眉。他卻只是伸出手，告訴你一個名字——余魚。`,
+ ['問他「我們見過嗎？」','余魚安靜看了你幾秒。「對你來說，沒有。」這句回答反而讓你更加困惑。',{daily:1},'met_god_maomao'],
+ ['沒有握住他的手','你沒有靠近。余魚也沒有追上來，只在你離開前說：「沒關係，還有時間。」',{daily:-1},'met_god_maomao']];
+ return ['tower','陌生的神明',
+ `你剛走出家門，就看見一名從未見過的女孩站在前方。\n\n她沒有介紹自己的來歷，只在你靠近時露出像是等待已久的神情。\n\n「嗯？這次換我來找你了。」\n\n你完全聽不懂她在說什麼。她只笑著告訴你一個名字——懋貓。`,
+ ['問她「我們認識嗎？」','懋貓眨了眨眼。「現在還不算。」她說得理所當然，反而讓你更在意。',{daily:1},'met_god_maomao'],
+ ['先離開再說','你決定不和奇怪的陌生人糾纏。懋貓沒有阻止，只在身後輕聲說：「下次見。」',{daily:-1},'met_god_maomao']]
+}
 const first=[
 ['tower','白色身影','你只是想抄近路回家，卻在北塔附近看見一個從未見過的女孩。\\n\\n她站在午後的光裡，像是在等人。你明明確定彼此從未見過，她看見你時卻輕聲說：「原來是現在的你。」\\n\\n你還來不及追問，她只告訴你一個名字——貓貓。',['問她是不是認識自己','她沒有正面回答，只看著你笑了一下：「現在還不用知道。」你莫名把這句話記得很清楚。',{daily:2},'met_god_maomao'],['問她為什麼在這裡','「等一個人。」她說。你問等誰，她的目光卻落在你身上。片刻後，她轉身離開。',{daily:2},'met_god_maomao']],
 ['room','春天的第一個早晨','窗外有人推著早餐攤經過。今天沒有什麼大事。\\n\\n老闆下午才需要你到藥店幫忙，上午完全屬於自己。',['再睡一下','你醒來時已經接近中午。雖然休息夠了，但整天的生活節奏都有些散掉。',{daily:-2}],['去街上吃早餐','你在熟悉的小攤坐下。老闆娘記得你不要蔥，還多塞了一塊餅給你。',{daily:4,money:-2}]],
@@ -159,7 +174,10 @@ function dueCausalEvent(){
  for(const c of CAUSAL_EVENTS){
    if(S.worldEvents[c.id])continue;
    if(c.life!=null && S.life!==c.life)continue;
-   if(S.year>=c.from && S.year<=c.to)return c;
+   if(S.year>=c.from && S.year<=c.to){
+     if(c.id==='maomao_first')return {...c,event:godIntroEvent()};
+     return c;
+   }
  }
  return null;
 }
@@ -200,29 +218,26 @@ function image(scene,result=false){let im=result?$('ri'):$('img'),fb=result?$('r
  im.onload=()=>{im.classList.remove('hidden');fb.classList.add('hidden')};
  im.src=data
 }else{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'}}
-function show(){head();if(S.result){showResult();return}let e=ev();$('card').classList.remove('hidden');$('result').classList.add('hidden');$('place').textContent=placeNames[e[0]];$('tag').textContent=S.life===0?'這一世的生活':S.life===1?'似曾相識':'輪迴中的一天';$('title').textContent=e[1].replaceAll('黎安',S.playerName||'黎安');$('story').textContent=cleanText(e[2].replaceAll('黎安',S.playerName||'黎安'));if(e[1]==='白色身影'){$('story').insertAdjacentHTML('afterend',`<div class="godNpc" id="godNpcCard"><img src="${GOD_NPC.image}" alt="神明貓貓"><div class="godNpcText"><div class="godNpcName">神明貓貓</div><div class="godNpcDesc">此時的你只知道，她是一個奇怪的陌生人。</div></div></div>`)}else{let g=$('godNpcCard');if(g)g.remove()}$('lb').textContent='← '+e[3][0];$('rb').textContent=e[4][0]+' →';$('lp').textContent=e[3][0];$('rp').textContent=e[4][0];image(e[0]);resetCard();log()}
-function apply(d){for(let k of ['daily','memory','intervene','anomaly'])if(d[k])S.r[k]=clamp(S.r[k]+d[k]);if(d.money)S.money=Math.max(0,S.money+d.money)}
-function choose(side){
+function show(){
+ head();
+ if(S.result){showResult();return}
  let e=ev();
- if(!e||e.length<5){S.index++;save();show();return}
- const activeCausal=dueCausalEvent();
- let o=side==='l'?e[3]:e[4];
- if(!o){S.index++;save();show();return}
-
- apply(o[2]||{});
- if(o[3])S.flags[o[3]]=true;
- if(activeCausal&&activeCausal.event===e){
-   S.worldEvents[activeCausal.id]={status:'resolved',year:S.year,life:S.life,choice:side};
- }
-
- S.recentEvents=S.recentEvents||[];
- S.recentEvents.push(e[1]);
- if(S.recentEvents.length>3)S.recentEvents.shift();
-
- S.result={label:o[0],text:o[1],delta:o[2]||{},scene:e[0]};
- S.log.unshift({day:S.day,label:o[0],text:o[1].split('\n')[0]});
- S.log=S.log.slice(0,7);
- save();show()
+ $('card').classList.remove('hidden');$('result').classList.add('hidden');
+ const isGodIntro=S.life===0&&S.year===2026&&S.worldEvents&&(!S.worldEvents.maomao_first)&&e[1]==='陌生的神明';
+ $('place').textContent=isGodIntro?currentGod().name:placeNames[e[0]];
+ $('tag').textContent=S.life===0?'這一世的生活':S.life===1?'似曾相識':'輪迴中的一天';
+ $('title').textContent=e[1].replaceAll('黎安',S.playerName||'黎安');
+ $('story').textContent=cleanText(e[2].replaceAll('黎安',S.playerName||'黎安'));
+ let oldNpc=$('godNpcCard');if(oldNpc)oldNpc.remove();
+ $('lb').textContent='← '+e[3][0];$('rb').textContent=e[4][0]+' →';
+ $('lp').textContent=e[3][0];$('rp').textContent=e[4][0];
+ if(isGodIntro){
+   let im=$('img'),fb=$('fallback'),g=currentGod();
+   im.onerror=()=>{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=g.name};
+   im.onload=()=>{im.classList.remove('hidden');fb.classList.add('hidden')};
+   im.src=g.image;
+ }else image(e[0]);
+ resetCard();log()
 }
 function showResult(){let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
 function oldAgeDeath(){
@@ -247,9 +262,6 @@ function next(){
  // A few choices are hidden instant-death risks; the option itself does not reveal this.
  if(dangerous&&/冒雨|繼續往下|踏進|沿著路/.test(dangerous)&&Math.random()<.12){die('意外死亡');return}
  S.year+=2;S.age+=2;S.day++;S.total++;S.index++;
- // 路線值不是永久累加器：日常會隨時間慢慢回到中間值。
- if(S.r.daily>50)S.r.daily=Math.max(50,S.r.daily-2);
- else if(S.r.daily<50)S.r.daily=Math.min(50,S.r.daily+1);
  if(S.year>=3026){
  let ei=0;
  if(S.r.memory>=85&&S.r.intervene>=85&&S.r.anomaly>=85&&S.flags.met_god_maomao)ei=34;
@@ -275,9 +287,9 @@ $('lb').onclick=()=>choose('l');$('rb').onclick=()=>choose('r');$('continue').on
 $('reset').onclick=()=>{if(confirm('確定刪除目前進度重新開始？')){S=fresh();localStorage.removeItem(KEY);selectedGender='';switchV('game');showSetup()}};
 $('nextLife').onclick=()=>{
  S.history.push({life:S.life,name:S.playerName,gender:S.gender,birth:S.birthYear,death:S.year,cause:S.dead.cause});
- S.life++;S.dead=null;S.playerName='';S.gender='';S.age=16;S.birthYear=S.year-16;S.day=1;S.index=0;S.slot=0;S.log=[];S.r.daily=50;
+ S.life++;S.dead=null;S.playerName='';S.age=16;S.birthYear=S.year-16;S.day=1;S.index=0;S.slot=0;S.log=[];S.r.daily=50;
  if(S.life===1)S.r.memory=1;
- selectedGender='';save();$('deathOverlay').classList.add('hidden');showSetup()
+ selectedGender=S.gender;save();$('deathOverlay').classList.add('hidden');showSetup()
 };
 
 function getEndingArchive(){try{return JSON.parse(localStorage.getItem('nameless_endings_v1'))||[]}catch(e){return[]}}
@@ -291,10 +303,19 @@ $('openCollection').onclick=()=>{renderCollection();$('collectionOverlay').class
 $('closeCollection').onclick=()=>{$('collectionOverlay').classList.add('hidden');$('endingDetail').classList.add('hidden')};
 document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>switchV(b.dataset.v));
 let selectedGender=S.gender||'';
-function showSetup(){$('setup').classList.remove('hidden');$('playerName').value=S.playerName||'';document.querySelectorAll('.genderBtn').forEach(b=>b.classList.toggle('active',b.dataset.gender===selectedGender))}
+function showSetup(){
+ $('setup').classList.remove('hidden');$('playerName').value=S.playerName||'';
+ const firstLife=S.life===0&&!S.gender;
+ $('genderChoice').style.display=firstLife?'grid':'none';
+ document.querySelector('.fieldLabel:nth-of-type(2)').style.display=firstLife?'block':'none';
+ $('setupNote').textContent=firstLife?'性別只在第一世選擇一次，之後所有輪迴都固定不變。':'你的性別維持不變。這一世只需要取一個新的名字。';
+ $('startGame').textContent=firstLife?'開始第一世':'開始下一世';
+ selectedGender=S.gender||selectedGender;
+ document.querySelectorAll('.genderBtn').forEach(b=>b.classList.toggle('active',b.dataset.gender===selectedGender))
+}
 function hideSetup(){$('setup').classList.add('hidden')}
 document.querySelectorAll('.genderBtn').forEach(b=>b.onclick=()=>{selectedGender=b.dataset.gender;document.querySelectorAll('.genderBtn').forEach(x=>x.classList.toggle('active',x===b))});
-$('startGame').onclick=()=>{let n=$('playerName').value.trim();if(!n){alert('先寫下你的名字。');return}if(!selectedGender){alert('請選擇性別。');return}S.playerName=n;S.gender=selectedGender;S.setup=true;S.birthYear=S.year-S.age;save();hideSetup();show()};
+$('startGame').onclick=()=>{let n=$('playerName').value.trim();if(!n){alert('先寫下你的名字。');return}if(S.life===0&&!S.gender&&!selectedGender){alert('請選擇性別。');return}S.playerName=n;if(!S.gender)S.gender=selectedGender;selectedGender=S.gender;S.setup=true;S.birthYear=S.year-S.age;save();hideSetup();show()};
 if(S.dead)showDeath();else if(S.setup)show();else showSetup();
 })();
 </script></body></html>
