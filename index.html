@@ -186,7 +186,7 @@ function switchV(v){['game','past','causes'].forEach(x=>$(x).classList.add('hidd
 function resetCard(){let c=$('card');c.style.transform='';c.style.opacity=1;$('lp').style.opacity=0;$('rp').style.opacity=0}
 let sx=0,dx=0,drag=false;$('card').addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag=true;sx=e.clientX;dx=0;$('card').setPointerCapture(e.pointerId);$('card').classList.add('drag')});$('card').addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-sx;$('card').style.transform=`translateX(${dx}px) rotate(${dx/28}deg)`;let o=Math.min(Math.abs(dx)/90,1);$('lp').style.opacity=dx<0?o:0;$('rp').style.opacity=dx>0?o:0});$('card').addEventListener('pointerup',()=>{if(!drag)return;drag=false;$('card').classList.remove('drag');if(Math.abs(dx)>85){let side=dx<0?'l':'r';$('card').style.transform=`translateX(${dx<0?-520:520}px) rotate(${dx<0?-12:12}deg)`;$('card').style.opacity=0;setTimeout(()=>choose(side),160)}else resetCard()});
 $('lb').onclick=()=>choose('l');$('rb').onclick=()=>choose('r');$('continue').onclick=next;
-save();image(ev()[0])};$('reset').onclick=()=>{if(confirm('確定刪除目前進度重新開始？')){S=fresh();localStorage.removeItem(KEY);switchV('game');showSetup()}};
+$('reset').onclick=()=>{if(confirm('確定刪除目前進度重新開始？')){S=fresh();localStorage.removeItem(KEY);selectedGender='';switchV('game');showSetup()}};
 $('nextLife').onclick=()=>{
  S.history.push({life:S.life,name:S.playerName,gender:S.gender,birth:S.birthYear,death:S.year,cause:S.dead.cause});
  S.life++;S.dead=null;S.playerName='';S.gender='';S.age=16;S.birthYear=S.year-16;S.day=1;S.index=0;S.slot=0;S.log=[];S.r.daily=50;
