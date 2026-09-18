@@ -244,7 +244,8 @@ function show(){
  resetCard();log()
 }
 function showResult(){
- $('card').classList.add('hidden');$('result').classList.remove('hidden');let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
+ let x=S.result;if(!x){show();return}
+ $('card').classList.add('hidden');$('result').classList.remove('hidden');$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&k!=='money'&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
 function oldAgeDeath(){
  if(S.age<60)return false;
  let p=.025+(S.age-60)*.017;
@@ -261,8 +262,10 @@ function showDeath(){
  $('deathDates').textContent=`西元 ${S.birthYear}－${S.year}　享年 ${S.age} 歲`;
  $('deathCause').textContent=`死因：${S.dead.cause}`
 }
-function next(){S.result=null;
- let dangerous=S.result&&S.result.label;
+function next(){
+ let finished=S.result;
+ let dangerous=finished&&finished.label;
+ S.result=null;
  
  // A few choices are hidden instant-death risks; the option itself does not reveal this.
  if(dangerous&&/冒雨|繼續往下|踏進|沿著路/.test(dangerous)&&Math.random()<.12){die('意外死亡');return}
