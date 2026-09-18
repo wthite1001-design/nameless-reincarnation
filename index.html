@@ -203,6 +203,57 @@ function ev(){
  let e=candidates[Math.abs(S.index)%candidates.length];
  return (e&&e.length>=5)?e:first[1]
 }
+
+function apply(delta){
+ delta=delta||{};
+ for(const [k,v] of Object.entries(delta)){
+   if(k==='money')continue;
+   if(S.r && Object.prototype.hasOwnProperty.call(S.r,k)){
+     S.r[k]=Math.max(0,Math.min(100,(Number(S.r[k])||0)+Number(v||0)));
+   }
+ }
+}
+
+function choose(side){
+ const e=ev();
+ if(!e || !Array.isArray(e) || e.length<5){resetCard();show();return}
+ const o=side==='l'?e[3]:e[4];
+ if(!o){resetCard();show();return}
+
+ const activeCausal=dueCausalEvent();
+ apply(o[2]||{});
+ if(o[3])S.flags[o[3]]=true;
+
+ if(activeCausal){
+   S.worldEvents[activeCausal.id]={
+     status:'resolved',year:S.year,life:S.life,choice:side
+   };
+ }
+
+ S.recentEvents=S.recentEvents||[];
+ S.recentEvents.push(e[1]);
+ if(S.recentEvents.length>3)S.recentEvents.shift();
+
+ S.result={
+   label:o[0]||'你的選擇',
+   text:cleanText(o[1]||'你的選擇改變了這一刻。'),
+   delta:o[2]||{},
+   scene:e[0]
+ };
+
+ S.log=S.log||[];
+ S.log.unshift({
+   day:S.day,
+   label:o[0]||'你的選擇',
+   text:cleanText(o[1]||'').split('\n')[0]
+ });
+ S.log=S.log.slice(0,7);
+
+ resetCard();
+ save();
+ showResult();
+}
+
 function unlocked(k){if(k==='daily')return true;if(k==='memory')return S.life>=1&&(S.flags.first_dejavu||S.flags.box_memory||S.r.memory>0);if(k==='anomaly')return S.life>=1&&S.r.anomaly>0;if(k==='intervene')return S.life>=2&&S.flags.accept_rebirth}
 function state(v){return v<=15?'極低':v<=35?'偏低':v<65?'平衡':v<85?'偏高':'極高'}
 function head(){
@@ -291,6 +342,7 @@ function causes(){let a=[];if(S.flags.river_help)a.push(['河岸上的援手','�
 function switchV(v){['game','past','causes'].forEach(x=>$(x).classList.add('hidden'));$(v).classList.remove('hidden');document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.v===v));if(v==='past')past();if(v==='causes')causes()}
 function resetCard(){let c=$('card');c.style.transform='';c.style.opacity=1;$('lp').style.opacity=0;$('rp').style.opacity=0}
 let sx=0,dx=0,drag=false;$('card').addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag=true;sx=e.clientX;dx=0;$('card').setPointerCapture(e.pointerId);$('card').classList.add('drag')});$('card').addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-sx;$('card').style.transform=`translateX(${dx}px) rotate(${dx/28}deg)`;let o=Math.min(Math.abs(dx)/90,1);$('lp').style.opacity=dx<0?o:0;$('rp').style.opacity=dx>0?o:0});$('card').addEventListener('pointerup',()=>{if(!drag)return;drag=false;$('card').classList.remove('drag');if(Math.abs(dx)>85){let side=dx<0?'l':'r';$('card').style.transform=`translateX(${dx<0?-520:520}px) rotate(${dx<0?-12:12}deg)`;$('card').style.opacity=0;setTimeout(()=>choose(side),160)}else resetCard()});
+$('card').addEventListener('pointercancel',()=>{drag=false;$('card').classList.remove('drag');resetCard()});
 $('lb').onclick=()=>choose('l');$('rb').onclick=()=>choose('r');$('continue').onclick=next;
 $('reset').onclick=()=>{if(confirm('確定刪除目前進度重新開始？')){S=fresh();localStorage.removeItem(KEY);selectedGender='';switchV('game');showSetup()}};
 $('nextLife').onclick=()=>{
