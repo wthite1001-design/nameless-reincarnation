@@ -48,18 +48,24 @@ const builtInScenes={
  tower:{ancient:'assets/scenes/tower_ancient.png',early:'assets/scenes/tower_ruined.png',modern:'assets/scenes/tower_modern.png',future:'assets/scenes/tower_future.png'}
 };
 function eraKey(){
- if(typeof S!=='undefined'&&Number.isFinite(S.year)){if(S.year<1600)return'ancient';if(S.year<1950)return'early';if(S.year<2200)return'modern';return'future'}
- if(typeof S!=='undefined'){if(S.life<=1)return'ancient';if(S.life<=2)return'early';if(S.life<=4)return'modern';return'future'}
- return'ancient'
+ if(typeof S!=='undefined'&&Number.isFinite(S.year)){
+   if(S.year<2200)return'modern';
+   if(S.year<2500)return'early';
+   return'future'
+ }
+ return'modern'
 }
 function builtInFor(scene){
  const e=eraKey();
- if(scene==='archive')return builtInScenes.archive[e]||builtInScenes.archive.ancient;
- if(scene==='shop')return builtInScenes.medical[e]||builtInScenes.medical.ancient;
- if(scene==='tower')return builtInScenes.tower[e]||builtInScenes.tower.ancient;
- if(scene==='work')return builtInScenes.work[e]||builtInScenes.work.ancient;
- if(scene==='home'||scene==='room'){if(e==='early')return builtInScenes.dining.early;if(e==='modern')return builtInScenes.dining.modern}
- return''
+ const pick=(group,key=e)=>builtInScenes[group][key]||builtInScenes[group].modern||builtInScenes[group].early||Object.values(builtInScenes[group])[0];
+ if(scene==='archive'||scene==='museum')return pick('archive');
+ if(scene==='shop')return pick('medical');
+ if(scene==='tower'||scene==='grave')return pick('tower');
+ if(scene==='work')return pick('work');
+ if(scene==='home'||scene==='room'||scene==='dining')return pick('dining',e==='future'?'modern':e);
+ if(scene==='market'||scene==='street'||scene==='rain')return pick('dining',e==='future'?'modern':e);
+ if(scene==='river')return pick('tower',e);
+ return pick('dining','modern')
 }
 const placeNames={work:'工作場所',room:'河東小屋',street:'白河城',shop:'藥店',river:'白河河岸',market:'中央市集',home:'家中',rain:'白河城・雨夜',museum:'新白河博物館',archive:'灰港檔案館',tower:'北塔',grave:'舊墓園'};
 const ENDINGS=[
@@ -101,6 +107,7 @@ const ENDINGS=[
 ];
 const GOD_NPC={name:'神明貓貓',image:'assets/npc/god_maomao.png'};
 const first=[
+['tower','白色身影','你只是想抄近路回家，卻在北塔附近看見一個從未見過的女孩。\\n\\n她站在午後的光裡，像是在等人。你明明確定彼此從未見過，她看見你時卻輕聲說：「原來是現在的你。」\\n\\n你還來不及追問，她只告訴你一個名字——貓貓。',['問她是不是認識自己','她沒有正面回答，只看著你笑了一下：「現在還不用知道。」你莫名把這句話記得很清楚。',{daily:2},'met_god_maomao'],['問她為什麼在這裡','「等一個人。」她說。你問等誰，她的目光卻落在你身上。片刻後，她轉身離開。',{daily:2},'met_god_maomao']],
 ['room','春天的第一個早晨','窗外有人推著早餐攤經過。今天沒有什麼大事。\\n\\n老闆下午才需要你到藥店幫忙，上午完全屬於自己。',['再睡一下','你醒來時已經接近中午。難得什麼都沒有耽誤，只是錯過了早餐。',{daily:2}],['去街上吃早餐','你在熟悉的小攤坐下。老闆娘記得你不要蔥，還多塞了一塊餅給你。',{daily:4,money:-2}]],
 ['street','街角的新鄰居','搬貨的人把整條巷子堵得亂七八糟。一個陌生女孩抱著紙箱，差點撞上你。\\n\\n「抱歉！我剛搬來。」',['幫她把箱子扶好','你順手幫她把箱子搬到門口。她叫米婭，住得離你不遠。',{daily:4},'met_mia'],['只是讓開道路','你點點頭，讓她先過。這只是普通的一次擦肩。',{daily:1}]],
 ['shop','忙碌的午後','藥店今天來了不少人。老闆一邊整理藥材，一邊抱怨你切藥草切得太慢。\\n\\n「再這樣下去，晚飯都別吃了。」',['認真把工作做完','你一直忙到夕陽落下。老闆嘴上嫌棄，最後還是多算了工錢。',{daily:3,money:7}],['偷偷提早溜走','你從後門溜了。今晚多出一段完全屬於自己的時間。',{daily:2,money:-2}]],
@@ -137,11 +144,18 @@ function head(){
  $('life').textContent=`第 ${S.life+1} 世・${S.playerName||''}`;
  $('date').textContent=`西元 ${S.year} 年・${S.age} 歲　銀幣 ${S.money}`;
 }
-function image(scene,result=false){let im=result?$('ri'):$('img'),fb=result?$('rf'):$('fallback'),data=builtInFor(scene);if(data){im.src=data;im.classList.remove('hidden');fb.classList.add('hidden')}else{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'}}
-function show(){head();if(S.result){showResult();return}let e=ev();$('card').classList.remove('hidden');$('result').classList.add('hidden');$('place').textContent=placeNames[e[0]];$('tag').textContent=S.life===0?'這一世的生活':S.life===1?'似曾相識':'輪迴中的一天';$('title').textContent=e[1].replaceAll('黎安',S.playerName||'黎安');$('story').textContent=e[2].replaceAll('黎安',S.playerName||'黎安');if(e[1]==='白色身影'){$('story').insertAdjacentHTML('afterend',`<div class="godNpc" id="godNpcCard"><img src="${GOD_NPC.image}" alt="神明貓貓"><div class="godNpcText"><div class="godNpcName">神明貓貓</div><div class="godNpcDesc">此時的你只知道，她是一個奇怪的陌生人。</div></div></div>`)}else{let g=$('godNpcCard');if(g)g.remove()}$('lb').textContent='← '+e[3][0];$('rb').textContent=e[4][0]+' →';$('lp').textContent=e[3][0];$('rp').textContent=e[4][0];image(e[0]);resetCard();log()}
+function cleanText(v){
+ return String(v??'').replace(/\\n/g,'\n').replace(/\n{3,}/g,'\n\n');
+}
+function image(scene,result=false){let im=result?$('ri'):$('img'),fb=result?$('rf'):$('fallback'),data=builtInFor(scene);if(data){
+ im.onerror=()=>{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'};
+ im.onload=()=>{im.classList.remove('hidden');fb.classList.add('hidden')};
+ im.src=data
+}else{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'}}
+function show(){head();if(S.result){showResult();return}let e=ev();$('card').classList.remove('hidden');$('result').classList.add('hidden');$('place').textContent=placeNames[e[0]];$('tag').textContent=S.life===0?'這一世的生活':S.life===1?'似曾相識':'輪迴中的一天';$('title').textContent=e[1].replaceAll('黎安',S.playerName||'黎安');$('story').textContent=cleanText(e[2].replaceAll('黎安',S.playerName||'黎安'));if(e[1]==='白色身影'){$('story').insertAdjacentHTML('afterend',`<div class="godNpc" id="godNpcCard"><img src="${GOD_NPC.image}" alt="神明貓貓"><div class="godNpcText"><div class="godNpcName">神明貓貓</div><div class="godNpcDesc">此時的你只知道，她是一個奇怪的陌生人。</div></div></div>`)}else{let g=$('godNpcCard');if(g)g.remove()}$('lb').textContent='← '+e[3][0];$('rb').textContent=e[4][0]+' →';$('lp').textContent=e[3][0];$('rp').textContent=e[4][0];image(e[0]);resetCard();log()}
 function apply(d){for(let k of ['daily','memory','intervene','anomaly'])if(d[k])S.r[k]=clamp(S.r[k]+d[k]);if(d.money)S.money=Math.max(0,S.money+d.money)}
 function choose(side){let e=ev(),o=side==='l'?e[3]:e[4];apply(o[2]||{});if(o[3])S.flags[o[3]]=true;S.result={label:o[0],text:o[1],delta:o[2]||{},scene:e[0]};S.log.unshift({day:S.day,label:o[0],text:o[1].split('\n')[0]});S.log=S.log.slice(0,7);save();show()}
-function showResult(){let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=x.text.replaceAll('黎安',S.playerName||'黎安');image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
+function showResult(){let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
 function oldAgeDeath(){
  if(S.age<60)return false;
  let p=.025+(S.age-60)*.017;
