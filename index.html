@@ -26,7 +26,11 @@
 .godNpc{margin-top:13px;border:1px solid #dfc19d;border-radius:16px;overflow:hidden;background:#fff3df}.godNpc img{width:100%;max-height:300px;object-fit:cover;object-position:50% 30%;display:block}.godNpcText{padding:11px 13px}.godNpcName{font:500 16px serif}.godNpcDesc{font-size:11px;color:#90735c;line-height:1.7;margin-top:4px}
 
 .collectionBtn{border:1px solid #d2b895;background:#fff4df;border-radius:12px;padding:8px 11px;height:42px;margin-right:6px}.collectionOverlay{position:fixed;inset:0;z-index:50;background:linear-gradient(#f6dfba,#e9bc8d);padding:18px 13px;overflow:auto}.collectionBox{max-width:650px;margin:auto;background:#fff8e9;border:1px solid #d6b68e;border-radius:22px;padding:18px}.collectionHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.collectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.endingItem{border:1px solid #ddc2a0;background:#fff3df;border-radius:14px;padding:12px;text-align:left;min-height:92px}.endingItem.locked{opacity:.55}.endingNo{font-size:9px;color:#a3866e}.endingName{font:500 15px serif;margin-top:4px}.endingDesc{font-size:10px;line-height:1.6;color:#92755e;margin-top:5px}.closeCollection{border:1px solid #d2b895;background:#fff4df;border-radius:10px;padding:7px 10px}.endingDetail{margin-top:15px;border-top:1px solid #e2c8a6;padding-top:14px;white-space:pre-line;line-height:1.9;font-size:13px}
-</style></head>
+</style>
+<style>
+#img.npcHero{object-fit:cover!important;object-position:center 24%!important;background:#f6e8d4}
+</style>
+</head>
 <body><section class="collectionOverlay hidden" id="collectionOverlay"><div class="collectionBox"><div class="collectionHead"><div><div class="over">ENDING ARCHIVE</div><div class="setupTitle" style="text-align:left">結局收藏</div><div class="setupIntro" id="collectionCount" style="text-align:left;margin:4px 0 0"></div></div><button class="closeCollection" id="closeCollection">關閉</button></div><div class="collectionGrid" id="collectionGrid"></div><div class="endingDetail hidden" id="endingDetail"></div></div></section><section class="deathOverlay hidden" id="deathOverlay"><div class="deathBox"><div class="over">這一世結束了</div><div class="setupTitle" id="deathName"></div><div class="deathDates" id="deathDates"></div><div class="deathCause" id="deathCause"></div><div class="setupIntro">世界沒有重來。它只是繼續向前。</div><button class="rebirthBtn" id="nextLife">進入下一世</button></div></section><section class="setupOverlay hidden" id="setup"><div class="setupBox"><div class="over" style="text-align:center">一段尚未開始的人生</div><div class="setupTitle">無名輪迴</div><div class="setupIntro">這一次，你會以什麼名字活下去？<br>第一世的你，還不知道未來會發生什麼。</div><label class="fieldLabel" for="playerName">玩家名字</label><input class="nameInput" id="playerName" maxlength="16" placeholder="輸入你的名字"><div class="fieldLabel">性別</div><div class="genderGrid" id="genderChoice"><button class="genderBtn" data-gender="女">女性</button><button class="genderBtn" data-gender="男">男性</button></div><button class="startBtn" id="startGame">開始第一世</button><div class="setupNote" id="setupNote">性別只在第一世選擇一次，之後所有輪迴都固定不變；每次重生只需要重新取名字。</div></div></section><div class="app">
 <header class="top"><div><div class="over" id="life">第一世</div><div class="title">無名輪迴</div><div class="date" id="date"></div></div><div><button class="collectionBtn" id="openCollection">結局收藏</button><button class="ghost" id="reset">重開</button></div></header>
 <section class="status"><div class="routeGrid" id="routes"></div></section>
@@ -107,8 +111,8 @@ const ENDINGS=[
 ['只有一次的今天','你理解了所有前世、干預與神明的真相，最後仍選擇讓世界只向前一次。']
 ];
 const GOD_NPCS={
- 女:{name:'神明余魚',image:'assets/npc/god_yuyu.png'},
- 男:{name:'神明懋貓',image:'assets/npc/god_maomao.png'}
+ 女:{name:'神明余魚',image:'god_yuyu.png'},
+ 男:{name:'神明懋貓',image:'god_maomao_half.jpg'}
 };
 function currentGod(){return GOD_NPCS[S.gender]||GOD_NPCS.男}
 function godIntroEvent(){
@@ -208,19 +212,19 @@ function head(){
  let visible=S.life===0?names.slice(0,1):names.filter(([n,k])=>k==='daily'||unlocked(k));
  $('routes').innerHTML=visible.map(([n,k])=>`<div><div class="rh"><span>${n}</span><span>${S.r[k]}</span></div><div class="track"><div class="fill" style="width:${S.r[k]}%"></div></div><div class="state">${state(S.r[k])}</div></div>`).join('');
  $('life').textContent=`第 ${S.life+1} 世・${S.playerName||''}`;
- $('date').textContent=`西元 ${S.year} 年・${S.age} 歲　銀幣 ${S.money}`;
+ $('date').textContent=`西元 ${S.year} 年・${S.age} 歲`;
 }
 function cleanText(v){
  return String(v??'').replace(/\\n/g,'\n').replace(/\n{3,}/g,'\n\n');
 }
-function image(scene,result=false){let im=result?$('ri'):$('img'),fb=result?$('rf'):$('fallback'),data=builtInFor(scene);if(data){
+function image(scene,result=false){const im0=$('img');if(im0)im0.classList.remove('npcHero');let im=result?$('ri'):$('img'),fb=result?$('rf'):$('fallback'),data=builtInFor(scene);if(data){
  im.onerror=()=>{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'};
  im.onload=()=>{im.classList.remove('hidden');fb.classList.add('hidden')};
  im.src=data
 }else{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'}}
 function show(){
  head();
- if(S.result){showResult();return}
+ if(S.result){showResult();return}$('card').classList.remove('hidden');
  let e=ev();
  $('card').classList.remove('hidden');$('result').classList.add('hidden');
  const isGodIntro=S.life===0&&S.year===2026&&S.worldEvents&&(!S.worldEvents.maomao_first)&&e[1]==='陌生的神明';
@@ -233,13 +237,14 @@ function show(){
  $('lp').textContent=e[3][0];$('rp').textContent=e[4][0];
  if(isGodIntro){
    let im=$('img'),fb=$('fallback'),g=currentGod();
-   im.onerror=()=>{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=g.name};
+   im.onerror=()=>{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent='圖片載入失敗：請確認 '+g.image+' 已和 index.html 一起上傳'};
    im.onload=()=>{im.classList.remove('hidden');fb.classList.add('hidden')};
-   im.src=g.image;
+   im.classList.remove('hidden');im.classList.add('npcHero');im.src=g.image;
  }else image(e[0]);
  resetCard();log()
 }
-function showResult(){let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
+function showResult(){
+ $('card').classList.add('hidden');$('result').classList.remove('hidden');let x=S.result;$('card').classList.add('hidden');$('result').classList.remove('hidden');$('chosen').textContent=x.label;$('resultText').textContent=cleanText(x.text.replaceAll('黎安',S.playerName||'黎安'));image(x.scene,true);let map={daily:'日常',memory:'追憶',intervene:'干預',anomaly:'異常',money:'銀幣'};$('deltas').innerHTML=Object.entries(x.delta).filter(([k,v])=>v&&unlocked(k)).map(([k,v])=>`<div class="delta">${map[k]||k}　${v>0?'+':''}${v}</div>`).join('')||'<div class="delta">這次沒有可見的數值變化</div>';head();log()}
 function oldAgeDeath(){
  if(S.age<60)return false;
  let p=.025+(S.age-60)*.017;
@@ -256,9 +261,9 @@ function showDeath(){
  $('deathDates').textContent=`西元 ${S.birthYear}－${S.year}　享年 ${S.age} 歲`;
  $('deathCause').textContent=`死因：${S.dead.cause}`
 }
-function next(){
+function next(){S.result=null;
  let dangerous=S.result&&S.result.label;
- S.result=null;
+ 
  // A few choices are hidden instant-death risks; the option itself does not reveal this.
  if(dangerous&&/冒雨|繼續往下|踏進|沿著路/.test(dangerous)&&Math.random()<.12){die('意外死亡');return}
  S.year+=2;S.age+=2;S.day++;S.total++;S.index++;
