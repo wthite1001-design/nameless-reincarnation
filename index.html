@@ -53,12 +53,12 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background-ima
 (()=>{
 const KEY='nameless_v04', $=x=>document.getElementById(x), clamp=n=>Math.max(0,Math.min(100,n));
 const SCENE_FILES={
- medical:[[2060,'assets/原始場景/medical_2060.svg']],
- archive:[[2100,'assets/原始場景/archive_2100.svg'],[2480,'assets/原始場景/archive_2480.svg'],[2600,'assets/原始場景/archive_2600.svg'],[2980,'assets/原始場景/archive_2980.svg']],
- river:[[2026,'assets/原始場景/river_2026.svg'],[2180,'assets/原始場景/river_2180.svg']],
- home:[[2260,'assets/原始場景/home_2260.svg']],
- tower:[[2360,'assets/原始場景/tower_2360.svg'],[2860,'assets/原始場景/tower_2860.svg']],
- work:[[2720,'assets/原始場景/work_2720.svg']]
+ medical:[[2060,'assets/original_scenes/medical_2060.svg']],
+ archive:[[2100,'assets/original_scenes/archive_2100.svg'],[2480,'assets/original_scenes/archive_2480.svg'],[2600,'assets/original_scenes/archive_2600.svg'],[2980,'assets/original_scenes/archive_2980.svg']],
+ river:[[2026,'assets/original_scenes/river_2026.svg'],[2180,'assets/original_scenes/river_2180.svg']],
+ home:[[2260,'assets/original_scenes/home_2260.svg']],
+ tower:[[2360,'assets/original_scenes/tower_2360.svg'],[2860,'assets/original_scenes/tower_2860.svg']],
+ work:[[2720,'assets/original_scenes/work_2720.svg']]
 };
 function nearestScene(group){
  const list=SCENE_FILES[group]||SCENE_FILES.home;
@@ -255,7 +255,7 @@ function choose(side){
    text:cleanText(o[1]||'你的選擇改變了這一刻。'),
    delta:o[2]||{},
    scene:e[0],
-    image:(activeCausal&&ORIGINAL_CAUSAL_SCENES[activeCausal.id])?ORIGINAL_CAUSAL_SCENES[activeCausal.id]:null
+    image:(activeCausal&&ORIGINAL_CAUSAL_SCENES[activeCausal.id])?ORIGINAL_CAUSAL_SCENES[activeCausal.id]:builtInFor(e[0])
  };
 
  S.log=S.log||[];
@@ -285,7 +285,7 @@ function head(){
 function cleanText(v){
  return String(v??'').replace(/\\n/g,'\n').replace(/\n{3,}/g,'\n\n');
 }
-const ORIGINAL_CAUSAL_SCENES={'river_help_once':'assets/原始場景/river_2026.svg','clinic_receipt':'assets/原始場景/medical_2060.svg','sealed_letter':'assets/原始場景/archive_2100.svg','bridge_vote':'assets/原始場景/river_2180.svg','mirror_fragment':'assets/原始場景/home_2260.svg','garden_gate':'assets/原始場景/tower_2360.svg','sleep_archive':'assets/原始場景/archive_2480.svg','name_registry':'assets/原始場景/archive_2600.svg','memory_law':'assets/原始場景/work_2720.svg','north_tower_signal':'assets/原始場景/tower_2860.svg','last_archive':'assets/原始場景/archive_2980.svg'};
+const ORIGINAL_CAUSAL_SCENES={'river_help_once':'assets/original_scenes/river_2026.svg','clinic_receipt':'assets/original_scenes/medical_2060.svg','sealed_letter':'assets/original_scenes/archive_2100.svg','bridge_vote':'assets/original_scenes/river_2180.svg','mirror_fragment':'assets/original_scenes/home_2260.svg','garden_gate':'assets/original_scenes/tower_2360.svg','sleep_archive':'assets/original_scenes/archive_2480.svg','name_registry':'assets/original_scenes/archive_2600.svg','memory_law':'assets/original_scenes/work_2720.svg','north_tower_signal':'assets/original_scenes/tower_2860.svg','last_archive':'assets/original_scenes/archive_2980.svg'};
 function image(scene,result=false){const im0=$('img');if(im0)im0.classList.remove('npcHero');
  const c=typeof dueCausalEvent==='function'?dueCausalEvent():null;
  if(!result&&c&&ORIGINAL_CAUSAL_SCENES[c.id]){
