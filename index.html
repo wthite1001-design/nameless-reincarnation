@@ -21,11 +21,28 @@
 
 .setupOverlay{position:absolute;inset:0;z-index:30;background:linear-gradient(#edf7fc,#d9eaf4);padding:24px 16px;min-height:100vh}.setupBox{max-width:520px;margin:42px auto 0;background:#f8fcff;border:1px solid #c4d9e7;border-radius:24px;padding:24px 20px;box-shadow:0 20px 55px rgba(105,72,42,.22)}.setupTitle{font:500 30px serif;letter-spacing:.12em;text-align:center}.setupIntro{text-align:center;color:#708294;font-size:13px;line-height:1.8;margin:10px 0 22px}.fieldLabel{display:block;font-size:12px;color:#597083;margin:14px 0 7px}.nameInput{width:100%;min-height:50px;border:1px solid #c7dce9;border-radius:13px;background:#ffffff;color:#514238;padding:10px 13px;font-size:16px}.genderGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.genderBtn{min-height:48px;border:1px solid #c7dce9;border-radius:13px;background:#f5faff;color:#40586a}.genderBtn.active{background:#d4e8f3;border-color:#91b8cf;font-weight:700}.startBtn{width:100%;min-height:52px;margin-top:22px;border:1px solid #c79764;border-radius:14px;background:linear-gradient(#d9edf7,#bcd9e9);color:#314b5e;font-weight:700}.setupNote{font-size:10px;color:#a18770;line-height:1.6;margin-top:11px;text-align:center}
 
-.deathOverlay{position:fixed;inset:0;z-index:35;background:linear-gradient(#edf7fc,#d9eaf4);padding:24px 16px;overflow:auto}.deathBox{max-width:520px;margin:50px auto;background:#f8fcff;border:1px solid #c4d9e7;border-radius:24px;padding:25px 20px;text-align:center;box-shadow:0 20px 55px rgba(105,72,42,.22)}.deathCause{font:500 22px serif;margin:16px 0 7px}.deathDates{font-size:13px;color:#708294;line-height:1.8}.rebirthBtn{width:100%;min-height:52px;margin-top:20px;border:1px solid #c79764;border-radius:14px;background:linear-gradient(#d9edf7,#bcd9e9);font-weight:700}
+.deathOverlay{position:fixed;inset:0;z-index:35;background:linear-gradient(#edf7fc,#d9eaf4);padding:24px 16px;overflow:auto}.deathOverlay.deathDark{background:radial-gradient(circle at 50% 35%,#171b24 0,#080a0f 48%,#000 100%);color:#eef4ff}.deathOverlay.deathDark .deathBox{background:rgba(7,10,16,.9);border-color:#2e3542;box-shadow:0 24px 80px rgba(0,0,0,.72)}.deathOverlay.deathDark .over,.deathOverlay.deathDark .deathDates,.deathOverlay.deathDark .setupIntro{color:#9ca7b7}.deathOverlay.deathDark .deathCause{color:#fff}.deathOverlay.deathDark .rebirthBtn{background:linear-gradient(#242b36,#151a22);border-color:#46505e;color:#eef4ff}.musicBtn{border:1px solid #bfd5e4;background:rgba(248,252,255,.82);color:#49677b;border-radius:12px;min-height:42px;padding:8px 10px;margin-right:6px}.deathBox{max-width:520px;margin:50px auto;background:#f8fcff;border:1px solid #c4d9e7;border-radius:24px;padding:25px 20px;text-align:center;box-shadow:0 20px 55px rgba(105,72,42,.22)}.deathCause{font:500 22px serif;margin:16px 0 7px}.deathDates{font-size:13px;color:#708294;line-height:1.8}.rebirthBtn{width:100%;min-height:52px;margin-top:20px;border:1px solid #c79764;border-radius:14px;background:linear-gradient(#d9edf7,#bcd9e9);font-weight:700}
 
 .godNpc{margin-top:13px;border:1px solid #c8dce8;border-radius:16px;overflow:hidden;background:#f4f9fc}.godNpc img{width:100%;max-height:300px;object-fit:cover;object-position:50% 30%;display:block}.godNpcText{padding:11px 13px}.godNpcName{font:500 16px serif}.godNpcDesc{font-size:11px;color:#90735c;line-height:1.7;margin-top:4px}
 
 .collectionBtn{border:1px solid #c6d9e6;background:#f3f9fc;border-radius:12px;padding:8px 11px;height:42px;margin-right:6px}.collectionOverlay{position:fixed;inset:0;z-index:50;background:linear-gradient(#edf7fc,#d9eaf4);padding:18px 13px;overflow:auto}.collectionBox{max-width:650px;margin:auto;background:#f8fcff;border:1px solid #c4d9e7;border-radius:22px;padding:18px}.collectionHead{display:flex;justify-content:space-between;align-items:center;gap:10px}.collectionGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:15px}.endingItem{border:1px solid #ddc2a0;background:#f4f9fc;border-radius:14px;padding:12px;text-align:left;min-height:92px}.endingItem.locked{opacity:.55}.endingNo{font-size:9px;color:#a3866e}.endingName{font:500 15px serif;margin-top:4px}.endingDesc{font-size:10px;line-height:1.6;color:#92755e;margin-top:5px}.closeCollection{border:1px solid #c6d9e6;background:#f3f9fc;border-radius:10px;padding:7px 10px}.endingDetail{margin-top:15px;border-top:1px solid #e2c8a6;padding-top:14px;white-space:pre-line;line-height:1.9;font-size:13px}
+
+/* v0.6 luminous archive UI */
+body{background:radial-gradient(circle at 12% 8%,rgba(125,211,252,.20),transparent 28%),radial-gradient(circle at 88% 18%,rgba(196,181,253,.18),transparent 25%),linear-gradient(180deg,#f9fdff 0%,#eef8ff 48%,#f7fbff 100%)!important;background-attachment:fixed}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;background-image:linear-gradient(rgba(92,150,190,.10) 1px,transparent 1px),linear-gradient(90deg,rgba(92,150,190,.10) 1px,transparent 1px);background-size:28px 28px;mask-image:linear-gradient(to bottom,#000,transparent 78%)}
+.app{position:relative}.app:before{content:"REINCARNATION ARCHIVE  •  LIFE SIGNAL ONLINE";display:block;margin:0 2px 10px;padding:9px 12px;border:1px solid rgba(126,178,211,.35);border-radius:12px;background:rgba(255,255,255,.58);backdrop-filter:blur(12px);font-size:9px;letter-spacing:.17em;color:#6f91a7}
+.top,.status,.card,.result,.log,.panel{backdrop-filter:blur(18px) saturate(125%)}
+.status,.card,.result,.log,.panel{background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(244,251,255,.84))!important;border-color:rgba(139,183,210,.45)!important;box-shadow:0 18px 55px rgba(70,118,150,.13),inset 0 1px rgba(255,255,255,.9)!important}
+.status{position:relative;overflow:hidden}.status:after{content:"";position:absolute;width:120px;height:120px;border:1px solid rgba(105,181,220,.17);border-radius:50%;right:-52px;top:-62px;box-shadow:0 0 0 14px rgba(105,181,220,.035),0 0 0 28px rgba(105,181,220,.025)}
+.scene{height:300px!important;background:linear-gradient(145deg,#eaf8ff,#cfeaf7)!important}.scene:after,.resultScene:after{content:"SCENE MEMORY";position:absolute;right:10px;bottom:8px;padding:4px 7px;border-radius:7px;background:rgba(246,252,255,.72);border:1px solid rgba(133,183,211,.28);font-size:8px;letter-spacing:.14em;color:#68899e;z-index:2}
+.scene img,.resultScene img{filter:saturate(.94) contrast(1.02)}
+.paper{background:linear-gradient(180deg,rgba(255,255,255,.97),rgba(245,251,255,.97))!important}.paper:before{border-color:rgba(117,174,205,.35)!important}.tag,.over{color:#7194aa!important}.title{color:#263d4c}.paper h2,.result h2{color:#273d4c}.story,.resultText{color:#3d5260}
+.track{background:#e2eef5!important}.fill{background:linear-gradient(90deg,#7cc7e8,#8aaee8,#b39be3)!important;box-shadow:0 0 12px rgba(103,183,224,.35)}
+.tap button,.continue,.ghost,.collectionBtn,.rebirthBtn,.startBtn,.genderBtn{border-color:rgba(119,174,205,.45)!important;background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(221,242,252,.9))!important;color:#365468!important;box-shadow:0 7px 18px rgba(70,126,158,.09)}
+.tap button:active,.continue:active{transform:scale(.985)}
+.continue,.startBtn,.rebirthBtn{background:linear-gradient(135deg,#e9f8ff,#cceaf8 58%,#ddd9fa)!important;font-weight:700}.bottom{background:rgba(246,252,255,.88)!important;border-color:rgba(125,176,204,.32)!important}.nav.active{background:linear-gradient(135deg,#dff3fc,#e8e4fb)!important;color:#31556c!important}.place{background:rgba(248,253,255,.88)!important;border-color:rgba(113,172,203,.28)!important;color:#45697f!important}.ribbon{background:linear-gradient(180deg,#79b9d8,#8d9fd8)!important}.delta{background:linear-gradient(135deg,#eef9ff,#f3efff)!important;border-color:rgba(128,176,204,.32)!important}.fallback{background:radial-gradient(circle at 50% 25%,rgba(255,255,255,.9),transparent 31%),linear-gradient(145deg,#e9f7fd,#cce7f4 58%,#d9dcf2)!important;color:#587486!important}
+.lifeMeta{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 0}.lifeChip{font-size:9px;letter-spacing:.08em;padding:6px 9px;border-radius:999px;border:1px solid rgba(117,174,205,.34);background:rgba(255,255,255,.62);color:#63849a}.eventPulse{display:inline-block;width:6px;height:6px;border-radius:50%;background:#79c7e8;box-shadow:0 0 10px #79c7e8;margin-right:5px}
+.musicControl{display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}.volumeWrap{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid rgba(137,170,205,.45);border-radius:12px;background:rgba(255,255,255,.72);font-size:10px;color:#60758b}.volumeWrap input{width:78px;accent-color:#7aa8d8}.musicBtn{min-height:42px}@media(max-width:520px){.musicControl{max-width:150px}.volumeWrap input{width:72px}}
 </style>
 <style>
 #img.npcHero{object-fit:cover!important;object-position:center 24%!important;background:#f6e8d4}
@@ -40,8 +57,8 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background-ima
 </style>
 </head>
 <body><section class="collectionOverlay hidden" id="collectionOverlay"><div class="collectionBox"><div class="collectionHead"><div><div class="over">ENDING ARCHIVE</div><div class="setupTitle" style="text-align:left">結局收藏</div><div class="setupIntro" id="collectionCount" style="text-align:left;margin:4px 0 0"></div></div><button class="closeCollection" id="closeCollection">關閉</button></div><div class="collectionGrid" id="collectionGrid"></div><div class="endingDetail hidden" id="endingDetail"></div></div></section><section class="deathOverlay hidden" id="deathOverlay"><div class="deathBox"><div class="over">這一世結束了</div><div class="setupTitle" id="deathName"></div><div class="deathDates" id="deathDates"></div><div class="deathCause" id="deathCause"></div><div class="setupIntro">世界沒有重來。它只是繼續向前。</div><button class="rebirthBtn" id="nextLife">進入下一世</button></div></section><section class="setupOverlay hidden" id="setup"><div class="setupBox"><div class="over" style="text-align:center">LIFE RECORD / INITIALIZATION</div><div class="setupTitle">無名輪迴</div><div class="setupIntro">輪迴檔案尚未建立。<br>輸入這一世的名字，從西元 2026 年開始你的第一段人生。</div><label class="fieldLabel" for="playerName">玩家名字</label><input class="nameInput" id="playerName" maxlength="16" placeholder="輸入你的名字"><div class="fieldLabel">性別</div><div class="genderGrid" id="genderChoice"><button class="genderBtn" data-gender="女">女性</button><button class="genderBtn" data-gender="男">男性</button></div><button class="startBtn" id="startGame">開始第一世</button><div class="setupNote" id="setupNote">性別只在第一世選擇一次，之後所有輪迴都固定不變；每次重生只需要重新取名字。</div></div></section><div class="app">
-<header class="top"><div><div class="over" id="life">第一世</div><div class="title">無名輪迴</div><div class="date" id="date"></div></div><div><button class="collectionBtn" id="openCollection">結局收藏</button><button class="ghost" id="reset">重開</button></div></header>
-<section class="status"><div class="routeGrid" id="routes"></div></section>
+<header class="top"><div><div class="over" id="life">第一世</div><div class="title">無名輪迴</div><div class="date" id="date"></div></div><div><div class="musicControl"><button class="musicBtn" id="musicToggle" aria-label="切換遊戲音樂">♫ 音樂</button><label class="volumeWrap" aria-label="音樂音量"><span>音量</span><input id="musicVolume" type="range" min="0" max="100" value="55" step="1"></label></div><button class="collectionBtn" id="openCollection">結局收藏</button><button class="ghost" id="reset">重開</button></div></header>
+<section class="status"><div class="routeGrid" id="routes"></div><div class="lifeMeta"><span class="lifeChip"><i class="eventPulse"></i>輪迴訊號穩定</span><span class="lifeChip" id="eventCountChip">本世事件 0 / 50</span><span class="lifeChip" id="causalChip">因果紀錄 0</span></div></section>
 <main id="game"><div class="stage">
 <article class="card" id="card"><div class="scene"><div class="fallback" id="fallback"></div><img class="hidden" id="img"><div class="shade"></div><div class="place" id="place"></div><div class="ribbon" id="ribbon">今日</div><div class="pick l" id="lp"></div><div class="pick r" id="rp"></div></div><div class="paper"><div class="tag" id="tag"></div><h2 id="title"></h2><div class="story" id="story"></div><div class="hint">向左或向右滑動做出選擇</div><div class="tap"><button id="lb"></button><button id="rb"></button></div></div></article>
 <article class="result hidden" id="result"><div class="resultHead"><div class="tag">你的選擇帶來了結果</div><h2 id="chosen"></h2></div><div class="resultScene"><div class="fallback" id="rf"></div><img class="hidden" id="ri"></div><div class="resultBody"><div class="resultText" id="resultText"></div><div class="deltas" id="deltas"></div><button class="continue" id="continue">繼續</button></div></article>
@@ -153,9 +170,9 @@ const later=[
 ['market','回到過去的鑰匙','你再次找到那只木盒。這一次，碰到它時周圍的聲音全部消失。\\n\\n你看見第一世的白河，就在一步之外。',['鬆開手','能回去，不代表應該回去。',{intervene:-3,daily:3}],['踏進那段時間','你真的回到了第一世。更可怕的是——年輕的黎安仍然存在。',{intervene:7,anomaly:6},'first_intervention']],
 ['tower','第零世的門','很多世以後，你找到一份比「第一世」更早的死亡紀錄。\\n\\n最後一句話是：「下一次，請不要再叫自己黎安。」',['到這裡就好','你轉身離開。答案仍在門後，但人生也仍在門外。',{daily:6,anomaly:-4}],['打開門','你終於知道：第一世不是開始，而是你第一次成功忘掉一切。',{memory:8,anomaly:9},'zero_truth']]
 ];
-function fresh(){return{setup:false,playerName:'',gender:'',life:0,year:2026,age:16,birthYear:2010,dead:null,day:1,slot:0,total:1,index:0,r:{daily:50,memory:0,intervene:0,anomaly:0},money:36,flags:{},images:{},history:[],log:[],worldEvents:{},recentEvents:[],result:null}}
+function fresh(){return{setup:false,playerName:'',gender:'',life:0,year:2026,age:16,birthYear:2010,dead:null,day:1,slot:0,total:1,index:0,r:{daily:50,memory:0,intervene:0,anomaly:0},money:36,flags:{},images:{},history:[],log:[],worldEvents:{},recentEvents:[],seenNormal:{},result:null}}
 let S;try{S=JSON.parse(localStorage.getItem(KEY))||fresh()}catch(e){S=fresh()}
-S.worldEvents=S.worldEvents||{};S.recentEvents=S.recentEvents||[];
+S.worldEvents=S.worldEvents||{};S.recentEvents=S.recentEvents||[];S.seenNormal=S.seenNormal||{};
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 const CAUSAL_EVENTS=[
@@ -201,22 +218,57 @@ function dueCausalEvent(){
  return null;
 }
 
+const NORMAL_EVENT_SEEDS=[
+ ['street','清晨的岔路','一條平常不走的小路今天格外安靜。','繞路看看','你多花了一點時間，卻發現一間從未注意的小店。',{daily:2},'照原路走','你按原本的節奏抵達目的地。',{daily:1}],
+ ['market','限時攤位','市集出現只停留一天的攤販，桌上擺著奇怪的小物。','停下來看看','你買下一件不起眼的小東西，意外成了今日的談資。',{daily:3},'不被吸引','你把錢留在口袋，繼續自己的行程。',{daily:1}],
+ ['home','門邊的聲音','回家時，你聽見門邊傳來細微聲響。','仔細確認','只是風吹動舊物，但你順手整理了積灰的角落。',{daily:2},'先進屋','你沒有理會，晚些時候聲音自然消失。',{daily:1}],
+ ['work','臨時的差事','原本不屬於你的工作突然落到你手上。','接下來做','事情比想像中麻煩，但你學到了一點新東西。',{daily:3},'婉拒','你守住原本的安排，也避開了額外麻煩。',{daily:1}],
+ ['river','河面上的東西','河面漂過一件看不清楚的物品，很快就要被水帶走。','想辦法撈起來','那只是普通舊物，卻讓你想起一些說不上來的感覺。',{memory:1,daily:1},'讓它漂走','河水很快把它帶出視線。',{daily:2}],
+ ['archive','錯放的資料','一份不屬於這個分類的資料夾被放在你面前。','翻開看看','內容沒有驚天秘密，但其中一行讓你莫名在意。',{memory:2,anomaly:1},'放回正確位置','你沒有窺探不屬於自己的紀錄。',{daily:2}],
+ ['tower','高處的風','你經過城市高處，今天的視野比平常清楚。','多留一會','你第一次從這個角度看懂城市的輪廓。',{daily:3},'繼續趕路','風景很好，但今天還有其他事。',{daily:1}],
+ ['medical','身體的小警訊','你今天一直覺得有點疲倦，卻還不到真正生病。','休息半天','睡醒後精神好了不少。',{daily:4},'照常行動','你把疲倦撐過去了，晚上卻累得更快。',{daily:-1}],
+ ['room','沒寫完的紙條','桌上留著一張只寫到一半的紙。你已經忘記原本想記什麼。','試著想起來','最後仍沒想起完整內容，但一個詞留在腦中。',{memory:2},'揉掉丟掉','有些念頭本來就不需要留下。',{daily:2}],
+ ['rain','突變的天氣','天空忽然變色，路上的人紛紛加快腳步。','找地方等雨','你和幾個陌生人一起躲過這場急雨。',{daily:3},'直接跑回去','你狼狽地抵達目的地，至少沒有耽誤太久。',{daily:1}]
+];
+const NORMAL_VARIANTS=[
+ ['偶然','今天沒有大事，但一個小決定仍留下痕跡。'],['回聲','你總覺得這一幕似乎曾在別的地方發生過。'],['日光','天氣很好，連普通的選擇都顯得清晰。'],['微光','某個不起眼的細節讓你停頓了一秒。'],['餘波','事情本身很小，卻可能在很久以後留下影響。']
+];
+function normalEventsForLife(){
+ const era=S.year<2150?'舊城':S.year<2500?'新城':S.year<2800?'聯網時代':'遠未來';
+ let out=[];
+ NORMAL_EVENT_SEEDS.forEach((a,i)=>NORMAL_VARIANTS.forEach((v,j)=>{
+   const n=i*5+j;
+   const left=JSON.parse(JSON.stringify([a[3],a[4],a[5]])),right=JSON.parse(JSON.stringify([a[6],a[7],a[8]]));
+   if(j===1){left[2].memory=(left[2].memory||0)+1}
+   if(j===4&&S.life>=2){right[2].intervene=(right[2].intervene||0)+1}
+   out.push([a[0],`${a[1]}・${v[0]}`,`${v[1]}\n\n${era}的生活仍在向前，而你必須決定怎麼回應眼前這一刻。`,left,right,`normal_${n}`]);
+ }));
+ return out;
+}
+const IMPORTANT_EVENTS=[
+ {id:'important_keepsake',life:0,day:8,event:['home','被留下的紀念物','整理房間時，你找到一件陪了你很多年的舊物。你忽然想到，也許有些東西能比人活得更久。',['好好保存','你替它留下日期與名字。',{daily:3,memory:2},'keepsake_saved'],['今天就清掉','你決定不讓物品替自己保存過去。',{daily:2,memory:-1},'keepsake_gone']]},
+ {id:'important_family',life:0,day:18,event:['home','家人的邀請','家人難得提出一起度過整天。你原本已經有自己的安排。',['留下陪家人','這一天沒有傳奇，卻成為家人多年後仍會提起的記憶。',{daily:7},'family_day'],['照原計畫出門','你沒有改變自己的安排。家人也沒有責怪你。',{daily:1},'family_missed']]},
+ {id:'important_name',life:1,day:10,event:['archive','前世留下的名字','你第一次得到一份足以確認前世姓名的紀錄。那個名字與現在的你毫無關係，卻熟悉得可怕。',['把名字記下來','你正式承認那個陌生人與自己有關。',{memory:8,anomaly:3},'accepted_old_name'],['不讓名字留下','你把紀錄關掉。這一世的名字才是你的。',{daily:4,memory:-2},'rejected_old_name']]},
+ {id:'important_witness',life:2,day:12,event:['tower','歷史的目擊者','你發現一個能證明某段歷史與官方記載不同的證據。公開它會改變很多人的認知。',['公開證據','城市開始重新整理那段歷史，你的行動也被留下紀錄。',{intervene:7,anomaly:4},'history_witness'],['秘密保存','真相暫時只存在你的收藏裡。',{memory:5},'secret_witness']]},
+ {id:'important_rescue',life:3,day:16,event:['street','本來不該活下來的人','你認出眼前的人按照你記得的歷史，今天應該會死。你還有時間干預。',['出手救人','歷史第一次在你眼前明確偏離。',{intervene:9,anomaly:7},'saved_fated_person'],['不改變歷史','你讓事件照記憶發生。這個選擇比干預更難。',{memory:5,intervene:-2},'kept_history']]},
+ {id:'important_archive',life:4,day:20,event:['archive','自己的收藏室','跨越多世留下的物品已經多到能裝滿一個房間。',['建立私人檔案','你開始替每件前世遺物編號。',{memory:8,anomaly:3},'private_archive'],['只留下最重要的','你不想被前世的東西淹沒。',{daily:5,memory:1},'small_archive']]},
+ {id:'important_choice',life:5,day:24,event:['river','兩條歷史的交界','你終於確認，同一個事件存在兩種互相矛盾、卻都曾真實發生過的版本。',['保留兩份紀錄','你接受世界曾經走過兩條不同的河。',{memory:7,anomaly:8},'two_histories'],['選一份當真相','你決定讓世界只保留一個版本。',{intervene:5,anomaly:-2},'one_history']]},
+ {id:'important_god',life:6,day:15,event:['tower','神明沒有說完的話','神明再次出現在你面前。這次她／他顯然知道更多，卻仍沒有把答案全部說完。',['要求完整真相','你第一次逼近輪迴真正的核心。',{memory:8,anomaly:6},'pressed_god_truth'],['暫時不追問','你選擇先活完眼前的人生。',{daily:7},'let_god_wait']]}
+];
+function dueImportantEvent(){
+ for(const x of IMPORTANT_EVENTS){if(S.life>=x.life&&S.day>=x.day&&!S.flags['important_done_'+x.id])return x}
+ return null;
+}
 function ev(){
  const causal=dueCausalEvent();
  if(causal&&Array.isArray(causal.event)&&causal.event.length>=5)return causal.event;
-
- let pool;
- if(S.life===0)pool=first.slice(1);
- else if(S.life===1)pool=second;
- else pool=later;
-
- if(!Array.isArray(pool)||!pool.length)return first[1];
-
- const recent=S.recentEvents||[];
- let candidates=pool.filter(x=>x&&x[1]&&!recent.includes(x[1]));
- if(!candidates.length)candidates=pool.filter(x=>x&&x[1]);
- let e=candidates[Math.abs(S.index)%candidates.length];
- return (e&&e.length>=5)?e:first[1]
+ const important=dueImportantEvent();
+ if(important)return important.event;
+ const pool=normalEventsForLife();
+ const key=String(S.life);S.seenNormal=S.seenNormal||{};S.seenNormal[key]=S.seenNormal[key]||[];
+ let candidates=pool.filter(x=>!S.seenNormal[key].includes(x[5]));
+ if(!candidates.length){S.seenNormal[key]=[];candidates=pool.slice()}
+ return candidates[Math.abs(S.index)%candidates.length]||pool[0];
 }
 
 function apply(delta){
@@ -236,6 +288,7 @@ function choose(side){
  if(!o){resetCard();show();return}
 
  const activeCausal=dueCausalEvent();
+ const activeImportant=!activeCausal?dueImportantEvent():null;
  apply(o[2]||{});
  if(o[3])S.flags[o[3]]=true;
 
@@ -245,6 +298,8 @@ function choose(side){
    };
    S.flags['causal_done_'+activeCausal.id]=true;
  }
+ if(activeImportant){S.flags['important_done_'+activeImportant.id]=true;}
+ if(e[5]&&String(e[5]).startsWith('normal_')){const k=String(S.life);S.seenNormal[k]=S.seenNormal[k]||[];if(!S.seenNormal[k].includes(e[5]))S.seenNormal[k].push(e[5]);}
 
  S.recentEvents=S.recentEvents||[];
  S.recentEvents.push(e[1]);
@@ -274,13 +329,15 @@ function choose(side){
 function unlocked(k){if(k==='daily')return true;if(k==='memory')return S.life>=1&&(S.flags.first_dejavu||S.flags.box_memory||S.r.memory>0);if(k==='anomaly')return S.life>=1&&S.r.anomaly>0;if(k==='intervene')return S.life>=2&&S.flags.accept_rebirth}
 function state(v){return v<=15?'極低':v<=35?'偏低':v<65?'平衡':v<85?'偏高':'極高'}
 function head(){
- S.worldEvents=S.worldEvents||{};S.recentEvents=S.recentEvents||[];
+ S.worldEvents=S.worldEvents||{};S.recentEvents=S.recentEvents||[];S.seenNormal=S.seenNormal||{};
  for(const k of ['daily','memory','intervene','anomaly'])if(!Number.isFinite(S.r[k]))S.r[k]=(k==='daily'?50:0);
  let names=[['日常','daily'],['追憶','memory'],['干預','intervene'],['異常','anomaly']];
  let visible=S.life===0?names.slice(0,1):names.filter(([n,k])=>k==='daily'||unlocked(k));
  $('routes').innerHTML=visible.map(([n,k])=>`<div><div class="rh"><span>${n}</span><span>${S.r[k]}</span></div><div class="track"><div class="fill" style="width:${S.r[k]}%"></div></div><div class="state">${state(S.r[k])}</div></div>`).join('');
  $('life').textContent=`第 ${S.life+1} 世・${S.playerName||''}`;
  $('date').textContent=`西元 ${S.year} 年・${S.age} 歲`;
+ if($('eventCountChip')){const seen=(S.seenNormal&&S.seenNormal[String(S.life)]||[]).length;$('eventCountChip').textContent=`本世事件 ${Math.min(seen,50)} / 50`;}
+ if($('causalChip')){$('causalChip').textContent=`因果紀錄 ${Object.values(S.worldEvents||{}).filter(x=>x.status==='resolved').length}`;}
 }
 function cleanText(v){
  return String(v??'').replace(/\\n/g,'\n').replace(/\n{3,}/g,'\n\n');
@@ -325,15 +382,18 @@ function oldAgeDeath(){
  if(S.age>=90)p+=.12;
  return Math.random()<Math.min(.72,p)
 }
-function die(cause){
- S.dead={cause:cause,year:S.year,age:S.age,name:S.playerName,gender:S.gender,birth:S.birthYear};
+function die(cause,deathType='normal'){
+ S.dead={cause:cause,deathType:deathType,year:S.year,age:S.age,name:S.playerName,gender:S.gender,birth:S.birthYear};
  save();showDeath()
 }
 function showDeath(){
+ const dark=S.dead&&(S.dead.deathType==='instant'||S.dead.deathType==='oldage'||/自然老死|意外死亡|即死/.test(S.dead.cause||''));
+ $('deathOverlay').classList.toggle('deathDark',!!dark);
  $('deathOverlay').classList.remove('hidden');
  $('deathName').textContent=`${S.playerName}，${S.gender}`;
  $('deathDates').textContent=`西元 ${S.birthYear}－${S.year}　享年 ${S.age} 歲`;
- $('deathCause').textContent=`死因：${S.dead.cause}`
+ $('deathCause').textContent=`死因：${S.dead.cause}`;
+ if(dark) setMusicMood('death');
 }
 function next(){
  let finished=S.result;
@@ -341,11 +401,17 @@ function next(){
  S.result=null;
  
  // A few choices are hidden instant-death risks; the option itself does not reveal this.
- if(dangerous&&/冒雨|繼續往下|踏進|沿著路/.test(dangerous)&&Math.random()<.12){die('意外死亡');return}
+ if(dangerous&&/冒雨|繼續往下|踏進|沿著路/.test(dangerous)&&Math.random()<.12){die('意外死亡','instant');return}
  S.year+=2;S.age+=2;S.day++;S.total++;S.index++;
  if(S.year>=3026){
  let ei=0;
- if(S.r.memory>=85&&S.r.intervene>=85&&S.r.anomaly>=85&&S.flags.met_god_maomao)ei=34;
+ if(S.flags.two_histories)ei=11;
+ else if(S.flags.private_archive&&S.r.memory>=65)ei=15;
+ else if(S.flags.history_witness&&S.r.intervene>=55)ei=13;
+ else if(S.flags.family_day&&S.r.daily>=80)ei=4;
+ else if(S.flags.saved_fated_person&&S.r.intervene>=70)ei=25;
+ else if(S.flags.registry_copy&&S.flags.final_archive_saved)ei=20;
+ else if(S.r.memory>=85&&S.r.intervene>=85&&S.r.anomaly>=85&&S.flags.met_god_maomao)ei=34;
  else if(S.flags.met_god_maomao&&S.r.memory>=75&&S.r.intervene>=70&&S.r.anomaly>=70&&S.life>=8)ei=30;
  else if(S.flags.met_god_maomao&&S.r.daily>=70&&S.r.memory>=55&&S.r.anomaly>=45&&S.life>=5)ei=27;
  else if(S.r.intervene>=85)ei=21;
@@ -355,7 +421,7 @@ function next(){
  else ei=Math.min(33,Math.max(0,(S.life*7+Math.floor(S.r.memory/20)+Math.floor(S.r.intervene/20))%34));
  unlockEnding(ei);save();alert(`西元 3026 年。\n結局：${ENDINGS[ei][0]}\n\n已加入結局收藏。`);renderCollection();$('collectionOverlay').classList.remove('hidden');return
 }
- if(oldAgeDeath()){die('自然老死');return}
+ if(oldAgeDeath()){die('自然老死','oldage');return}
  save();show()
 }
 function log(){$('log').innerHTML=S.log.length?S.log.map(x=>`<div class="li">第 ${x.day} 日　${x.label}<br>${x.text}</div>`).join(''):'<div class="li">這一世才剛開始。</div>'}
@@ -386,9 +452,9 @@ $('lb').onclick=()=>choose('l');$('rb').onclick=()=>choose('r');$('continue').on
 $('reset').onclick=()=>{if(confirm('確定刪除目前進度重新開始？')){S=fresh();localStorage.removeItem(KEY);selectedGender='';switchV('game');showSetup()}};
 $('nextLife').onclick=()=>{
  S.history.push({life:S.life,name:S.playerName,gender:S.gender,birth:S.birthYear,death:S.year,cause:S.dead.cause});
- S.life++;S.dead=null;S.playerName='';S.age=16;S.birthYear=S.year-16;S.day=1;S.index=0;S.slot=0;S.log=[];S.r.daily=50;
+ S.life++;S.dead=null;S.playerName='';S.age=16;S.birthYear=S.year-16;S.day=1;S.index=0;S.slot=0;S.log=[];S.recentEvents=[];S.r.daily=50;
  if(S.life===1)S.r.memory=1;
- selectedGender=S.gender;save();$('deathOverlay').classList.add('hidden');showSetup()
+ selectedGender=S.gender;save();$('deathOverlay').classList.add('hidden');$('deathOverlay').classList.remove('deathDark');setMusicMood('life');showSetup()
 };
 
 function getEndingArchive(){try{return JSON.parse(localStorage.getItem('nameless_endings_v1'))||[]}catch(e){return[]}}
@@ -401,6 +467,55 @@ function renderCollection(){
 $('openCollection').onclick=()=>{renderCollection();$('collectionOverlay').classList.remove('hidden')};
 $('closeCollection').onclick=()=>{$('collectionOverlay').classList.add('hidden');$('endingDetail').classList.add('hidden')};
 document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>switchV(b.dataset.v));
+// Lightweight original ambient soundtrack generated in-browser; no external audio file is required.
+let audioCtx=null,musicMaster=null,musicTimer=null,musicOn=true,musicMood='life',musicStep=0,musicVolume=.55,pageAudioPaused=false;
+function ensureMusic(){
+ if(!musicOn)return;
+ try{
+  if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();musicMaster=audioCtx.createGain();musicMaster.gain.value=.055*musicVolume;musicMaster.connect(audioCtx.destination);scheduleMusic()}
+  if(audioCtx.state==='suspended'&&!document.hidden)audioCtx.resume();
+ }catch(e){}
+}
+function tone(freq,dur=.9,vol=.18,type='sine'){
+ if(!audioCtx||!musicMaster||!musicOn)return;
+ const o=audioCtx.createOscillator(),g=audioCtx.createGain(),now=audioCtx.currentTime;
+ o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(vol,now+.06);g.gain.exponentialRampToValueAtTime(.001,now+dur);o.connect(g);g.connect(musicMaster);o.start(now);o.stop(now+dur+.05)
+}
+function scheduleMusic(){
+ clearInterval(musicTimer);
+ const life=[220,277.18,329.63,415.30,329.63,277.18,246.94,329.63];
+ const death=[110,130.81,146.83,123.47,98,116.54,103.83,87.31];
+ musicTimer=setInterval(()=>{if(!musicOn||!audioCtx||document.hidden)return;const seq=musicMood==='death'?death:life;const f=seq[musicStep++%seq.length];tone(f,musicMood==='death'?1.8:1.25,musicMood==='death'?.11:.13,musicMood==='death'?'triangle':'sine');if(musicStep%2===0)tone(f/2,2.2,.055,'sine')},musicMood==='death'?1150:820)
+}
+function setMusicMood(m){musicMood=m;if(audioCtx){scheduleMusic();if(m==='death'){musicMaster.gain.cancelScheduledValues(audioCtx.currentTime);musicMaster.gain.setTargetAtTime(.035*musicVolume,audioCtx.currentTime,.2)}else musicMaster.gain.setTargetAtTime(.055*musicVolume,audioCtx.currentTime,.3)}}
+function updateMusicButton(){$('musicToggle').textContent=musicOn?'♫ 音樂':'♩ 靜音'}
+$('musicToggle').onclick=()=>{musicOn=!musicOn;updateMusicButton();if(musicOn)ensureMusic();else if(audioCtx&&musicMaster)musicMaster.gain.setTargetAtTime(.0001,audioCtx.currentTime,.08)};
+updateMusicButton();
+const volumeEl=$('musicVolume');
+if(volumeEl){
+ volumeEl.value=Math.round(musicVolume*100);
+ volumeEl.addEventListener('input',()=>{
+  musicVolume=Math.max(0,Math.min(1,Number(volumeEl.value)/100));
+  if(musicMaster&&audioCtx){const base=musicMood==='death'?.035:.055;musicMaster.gain.setTargetAtTime(base*musicVolume,audioCtx.currentTime,.05)}
+ });
+}
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){
+  pageAudioPaused=true;
+  clearInterval(musicTimer);musicTimer=null;
+  if(audioCtx&&audioCtx.state==='running')audioCtx.suspend().catch(()=>{});
+ }else if(pageAudioPaused){
+  pageAudioPaused=false;
+  if(musicOn){
+   if(audioCtx)audioCtx.resume().then(()=>scheduleMusic()).catch(()=>{});
+   else ensureMusic();
+  }
+ }
+});
+window.addEventListener('pagehide',()=>{clearInterval(musicTimer);musicTimer=null;if(audioCtx&&audioCtx.state==='running')audioCtx.suspend().catch(()=>{})});
+window.addEventListener('pageshow',()=>{if(musicOn&&audioCtx&&!document.hidden)audioCtx.resume().then(()=>scheduleMusic()).catch(()=>{})});
+document.addEventListener('pointerdown',()=>ensureMusic(),{once:true});
+
 let selectedGender=S.gender||'';
 function showSetup(){
  $('setup').classList.remove('hidden');$('playerName').value=S.playerName||'';
@@ -414,7 +529,7 @@ function showSetup(){
 }
 function hideSetup(){$('setup').classList.add('hidden')}
 document.querySelectorAll('.genderBtn').forEach(b=>b.onclick=()=>{selectedGender=b.dataset.gender;document.querySelectorAll('.genderBtn').forEach(x=>x.classList.toggle('active',x===b))});
-$('startGame').onclick=()=>{let n=$('playerName').value.trim();if(!n){alert('先寫下你的名字。');return}if(S.life===0&&!S.gender&&!selectedGender){alert('請選擇性別。');return}S.playerName=n;if(!S.gender)S.gender=selectedGender;selectedGender=S.gender;S.setup=true;S.birthYear=S.year-S.age;save();hideSetup();show()};
+$('startGame').onclick=()=>{let n=$('playerName').value.trim();if(!n){alert('先寫下你的名字。');return}if(S.life===0&&!S.gender&&!selectedGender){alert('請選擇性別。');return}S.playerName=n;if(!S.gender)S.gender=selectedGender;selectedGender=S.gender;S.setup=true;S.birthYear=S.year-S.age;save();ensureMusic();setMusicMood('life');hideSetup();show()};
 if(S.dead)showDeath();else if(S.setup)show();else showSetup();
 })();
 </script></body></html>
