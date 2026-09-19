@@ -52,33 +52,27 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background-ima
 <script>
 (()=>{
 const KEY='nameless_v04', $=x=>document.getElementById(x), clamp=n=>Math.max(0,Math.min(100,n));
-const builtInScenes={
- medical:{ancient:'assets/scenes/medical_ancient.png',early:'assets/scenes/medical_early.png',modern:'assets/scenes/medical_modern.png',future:'assets/scenes/medical_future.png'},
- archive:{ancient:'assets/scenes/archive_ancient.png',early:'assets/scenes/archive_early.png',modern:'assets/scenes/archive_modern.png',future:'assets/scenes/archive_future.png'},
- dining:{early:'assets/scenes/dining_early.png',modern:'assets/scenes/dining_modern.png'},
- work:{ancient:'assets/scenes/work_ancient.png',early:'assets/scenes/work_industrial.png',future:'assets/scenes/work_future.png'},
- tower:{ancient:'assets/scenes/tower_ancient.png',early:'assets/scenes/tower_ruined.png',modern:'assets/scenes/tower_modern.png',future:'assets/scenes/tower_future.png'}
+const SCENE_FILES={
+ medical:[[2060,'assets/原始場景/medical_2060.svg']],
+ archive:[[2100,'assets/原始場景/archive_2100.svg'],[2480,'assets/原始場景/archive_2480.svg'],[2600,'assets/原始場景/archive_2600.svg'],[2980,'assets/原始場景/archive_2980.svg']],
+ river:[[2026,'assets/原始場景/river_2026.svg'],[2180,'assets/原始場景/river_2180.svg']],
+ home:[[2260,'assets/原始場景/home_2260.svg']],
+ tower:[[2360,'assets/原始場景/tower_2360.svg'],[2860,'assets/原始場景/tower_2860.svg']],
+ work:[[2720,'assets/原始場景/work_2720.svg']]
 };
-const riverScene=`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700"><defs><linearGradient id="s" x2="0" y2="1"><stop stop-color="#f8d7a9"/><stop offset=".55" stop-color="#eab07e"/><stop offset="1" stop-color="#8aa0a0"/></linearGradient><linearGradient id="w"><stop stop-color="#8da6aa"/><stop offset="1" stop-color="#d8c5a3"/></linearGradient></defs><rect width="900" height="700" fill="url(#s)"/><circle cx="650" cy="150" r="75" fill="#fff1ce" opacity=".75"/><path d="M0 390 Q180 330 350 390 T700 375 T900 390 V700 H0Z" fill="url(#w)"/><path d="M0 430 Q200 380 410 435 T900 420" fill="none" stroke="#f7e4c2" stroke-width="12" opacity=".55"/><path d="M0 335 Q170 290 320 330 L320 365 Q150 340 0 390Z" fill="#9c7c5d"/><path d="M900 330 Q760 290 620 335 L620 370 Q780 340 900 390Z" fill="#8f765d"/><g fill="#6f755f"><circle cx="90" cy="285" r="48"/><circle cx="160" cy="300" r="55"/><circle cx="780" cy="285" r="55"/><circle cx="845" cy="305" r="45"/></g></svg>`)}`;
-function eraKey(){
- if(typeof S!=='undefined'&&Number.isFinite(S.year)){
-   if(S.year<2200)return'modern';
-   if(S.year<2500)return'early';
-   return'future'
- }
- return'modern'
+function nearestScene(group){
+ const list=SCENE_FILES[group]||SCENE_FILES.home;
+ const y=(typeof S!=='undefined'&&Number.isFinite(S.year))?S.year:2026;
+ return list.reduce((best,x)=>Math.abs(x[0]-y)<Math.abs(best[0]-y)?x:best,list[0])[1];
 }
 function builtInFor(scene){
- const e=eraKey();
- const pick=(group,key=e)=>builtInScenes[group][key]||builtInScenes[group].modern||builtInScenes[group].early||Object.values(builtInScenes[group])[0];
- if(scene==='archive'||scene==='museum')return pick('archive');
- if(scene==='shop')return pick('medical');
- if(scene==='tower'||scene==='grave')return pick('tower');
- if(scene==='work')return pick('work');
- if(scene==='home'||scene==='room'||scene==='dining')return pick('dining',e==='future'?'modern':e);
- if(scene==='market'||scene==='street'||scene==='rain')return pick('dining',e==='future'?'modern':e);
- if(scene==='river')return riverScene;
- return pick('dining','modern')
+ if(scene==='archive'||scene==='museum')return nearestScene('archive');
+ if(scene==='shop')return nearestScene('medical');
+ if(scene==='tower'||scene==='grave')return nearestScene('tower');
+ if(scene==='work')return nearestScene('work');
+ if(scene==='river')return nearestScene('river');
+ if(scene==='home'||scene==='room'||scene==='dining'||scene==='market'||scene==='street'||scene==='rain')return nearestScene('home');
+ return nearestScene('home');
 }
 const placeNames={work:'工作場所',room:'河東小屋',street:'白河城',shop:'藥店',river:'白河河岸',market:'中央市集',home:'家中',rain:'白河城・雨夜',museum:'新白河博物館',archive:'灰港檔案館',tower:'北塔',grave:'舊墓園'};
 const ENDINGS=[
