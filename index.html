@@ -39,7 +39,7 @@
 <article class="result hidden" id="result"><div class="resultHead"><div class="tag">你的選擇帶來了結果</div><h2 id="chosen"></h2></div><div class="resultScene"><div class="fallback" id="rf"></div><img class="hidden" id="ri"></div><div class="resultBody"><div class="resultText" id="resultText"></div><div class="deltas" id="deltas"></div><button class="continue" id="continue">繼續</button></div></article>
 </div><section class="log"><h3>這一世的最近選擇</h3><div id="log"></div></section></main>
 <section class="panel hidden" id="past"><div class="tag">前世</div><h2 style="font-family:serif">輪迴檔案</h2><div id="pastList"></div></section>
-<section class="panel hidden" id="causes"><div class="tag">因果</div><h2 style="font-family:serif">被時間留下的事情</h2><div id="causeList"></div></section>
+<section class="panel hidden" id="causes"><div class="tag">因果</div><h2 style="font-family:serif">被時間留下的事情</h2><p class="muted">這裡記錄的是已經發生過的關鍵事件。它們不會在之後的正常人生中重新出現。</p><div id="causeList"></div></section>
 </div><nav class="bottom"><div class="bottomin"><button class="nav active" data-v="game">此生</button><button class="nav" data-v="past">前世</button><button class="nav" data-v="causes">因果</button></div></nav>
 <script>
 (()=>{
@@ -132,7 +132,7 @@ const first=[
 ['street','街角的新鄰居','搬貨的人把整條巷子堵得亂七八糟。一個陌生女孩抱著紙箱，差點撞上你。\\n\\n「抱歉！我剛搬來。」',['幫她把箱子扶好','你順手幫她把箱子搬到門口。她叫米婭，住得離你不遠。',{daily:4},'met_mia'],['只是讓開道路','你點點頭，讓她先過。這只是普通的一次擦肩。',{daily:1}]],
 ['shop','忙碌的午後','藥店今天來了不少人。老闆一邊整理藥材，一邊抱怨你切藥草切得太慢。\\n\\n「再這樣下去，晚飯都別吃了。」',['認真把工作做完','你一直忙到夕陽落下。老闆嘴上嫌棄，最後還是多算了工錢。',{daily:3,money:7}],['偷偷提早溜走','你從後門溜了。今晚多出一段自己的時間，但工作留下的麻煩還是得有人收拾。',{daily:-3,money:-2}]],
 ['market','休假的市集','今天不用工作。市集裡有賣花的、唱歌的、吵架的，還有人正在猜杯子底下藏著哪顆豆子。',['花點錢玩一輪','你輸掉兩枚銀幣，卻莫名其妙和旁邊的人笑成一團。',{daily:4,money:-2}],['把錢留下來','你只是逛了一圈。回家時口袋裡的錢一枚也沒少。',{daily:2}]],
-['river','河岸上的少年','送藥途中，你看見一名少年跪在泥地，手裡攥著被扯斷的錢袋。\\n\\n遠處有人喊著抓賊。少年喘著氣說：「我妹妹快死了。」',['把他交給追來的人','你叫住追來的人。少年被帶走以前看了你很久。\\n\\n當下，你只覺得自己做了應該做的事。',{daily:-1},'river_caught'],['替他付藥錢','你把今天的工錢塞進他手裡。少年愣住，最後只說了一聲謝謝。\\n\\n你沒有問他的名字。',{daily:4,money:-10},'river_help']],
+,
 ['home','晚飯桌上的小事','今天的湯有點鹹。家裡的人互相推卸到底是誰多放了一匙鹽。\\n\\n窗外很安靜。',['加入這場無聊的爭論','最後誰也沒承認，但你們把整鍋湯吃完了。',{daily:5}],['吃完就回房間','你還有自己的事情要做。門關上後，外面的笑聲很快就聽不清了。',{daily:-2}]],
 ['street','一場突然的大雨','你沒帶傘。屋簷下已經擠了好幾個陌生人。米婭站在另一頭，看見你後朝你揮手。',['跑過去和她一起躲雨','你們聊到雨停。她說自己其實很怕雷，但剛才一次都沒表現出來。',{daily:5},'mia_close'],['冒雨跑回家','鞋子全濕了。第二天你還因此打了好幾個噴嚏，原本的安排也被打亂。',{daily:-2}]],
 ['shop','老闆的舊木盒','打掃倉庫時，你翻到一只很舊的木盒。老闆說是前任店主留下的垃圾，讓你自己決定怎麼處理。',['留下來裝自己的東西','你在盒底刻下一道很小的記號。以後如果看到，你一定認得。',{daily:2},'woodbox'],['直接丟掉','它只是個舊盒子。你把它扔進後巷，回頭卻莫名覺得今天少留下了什麼。',{daily:-1}]],
@@ -157,13 +157,26 @@ S.worldEvents=S.worldEvents||{};S.recentEvents=S.recentEvents||[];
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
 const CAUSAL_EVENTS=[
+ {id:'river_help_once',from:2030,to:2050,life:0,event:['river','河岸上的少年','送藥途中，你看見一名少年跪在泥地，手裡攥著被扯斷的錢袋。\\n\\n遠處有人喊著抓賊。少年喘著氣說：「我妹妹快死了。」',['把他交給追來的人','你叫住追來的人。少年被帶走以前看了你很久。\\n\\n當下，你只覺得自己做了應該做的事。',{daily:-1},'river_caught'],['替他付藥錢','你把今天的工錢塞進他手裡。少年愣住，最後只說了一聲謝謝。\\n\\n你沒有問他的名字。',{daily:4,money:-10},'river_help']]},
  {id:'maomao_first',from:2026,to:2026,life:0,event:first[0]},
  {id:'old_box',from:2040,to:2046,event:['home','沒有寄件人的盒子','門口放著一只沒有寄件人的舊盒子。盒蓋內側刻著一個你看不懂的記號。',['把盒子留下','你把盒子收進櫃子。多年後，也許會有人再次打開它。',{daily:1},'kept_old_box'],['丟掉盒子','你把它當成無主雜物處理掉。這個決定沒有立刻造成任何變化。',{daily:-1},'discarded_old_box']]},
  {id:'river_record',from:2080,to:2086,event:['river','河岸的舊紀錄','整修河岸時，有人從地基裡找到一塊刻著舊名字的金屬牌。那個名字讓你產生難以解釋的熟悉感。',['抄下名字','你把名字記進日誌。',{memory:4},'recorded_river_name'],['不去深究','你告訴自己只是巧合。',{anomaly:-2,daily:2},'ignored_river_name']]},
  {id:'archive_gap',from:2160,to:2168,event:['archive','缺失的八年','檔案館的一批資料中，有八年的紀錄被整齊地抽空了。奇怪的是，索引仍指向那些不存在的頁面。',['追查索引','你留下了這個異常的線索。',{memory:3,anomaly:3},'found_archive_gap'],['當成整理錯誤','你沒有把時間花在這件事上。',{daily:2,anomaly:-1},'dismissed_archive_gap']]},
  {id:'tower_rebuild',from:2280,to:2288,event:['tower','北塔重建案','城市決定是否保留北塔舊址。這次表決只會發生一次，而結果會改變之後數百年的城市景觀。',['支持保留','北塔舊址被納入保存計畫。',{intervene:2,daily:-1},'tower_preserved'],['支持拆除','舊址被讓給新的城市工程。',{daily:2,intervene:-1},'tower_removed']]},
  {id:'identity_archive',from:2440,to:2448,event:['archive','重複的名字','一套跨世紀身分資料出現不可能的重複特徵。你第一次看到足以把「熟悉感」變成證據的東西。',['保存副本','你秘密留下資料副本。',{memory:5,anomaly:5},'identity_copy'],['刪除副本','你決定不讓這份資料繼續存在。',{memory:-2,anomaly:-2},'identity_deleted']]},
- {id:'future_protocol',from:2780,to:2788,event:['work','記憶保存協議','新的記憶保存技術即將被寫入公共制度。你知道這項決定可能影響3026年的人如何理解「一個人」。',['支持保存','制度開始保存更完整的個人記憶。',{memory:4,intervene:3},'memory_protocol'],['反對保存','制度限制了跨世代記憶保存。',{daily:3,memory:-2},'memory_restricted']]}
+ {id:'future_protocol',from:2780,to:2788,event:['work','記憶保存協議','新的記憶保存技術即將被寫入公共制度。你知道這項決定可能影響3026年的人如何理解「一個人」。',['支持保存','制度開始保存更完整的個人記憶。',{memory:4,intervene:3},'memory_protocol'],['反對保存','制度限制了跨世代記憶保存。',{daily:3,memory:-2},'memory_restricted']]},
+
+{id:'clinic_receipt',from:2060,to:2068,event:['medical','沒有名字的收據','診所整理舊櫃時，翻出一張沒有病患姓名的收據。背面只寫著：「如果有人來找，告訴他我活下來了。」',['留下收據','你把收據夾進自己的筆記。這張薄紙沒有立刻改變任何事。',{daily:-1},'kept_clinic_receipt'],['交回診所','你把它交給櫃檯，讓它重新回到檔案裡。',{daily:1},'returned_clinic_receipt']]},
+{id:'sealed_letter',from:2100,to:2110,event:['archive','寄不出去的信','舊檔案館收到一批私人捐贈。最底下有封從未寄出的信，收件人的姓氏與你這一世相同。',['讀完並抄下內容','你記下信裡提到的一個地址。多年後，那個地址仍可能存在。',{memory:4},'copied_sealed_letter'],['尊重隱私，不拆信','你讓信保持原樣。某些秘密因此繼續沉睡。',{daily:2,memory:-1},'left_letter_sealed']]},
+{id:'bridge_vote',from:2180,to:2190,event:['river','白河橋的表決','白河城準備拆掉老橋改建。居民分成兩派，而你的那一票剛好可能改變結果。',['支持保留老橋','老橋被列入保存名單。它將繼續留在城市裡。',{daily:2,intervene:1},'old_bridge_saved'],['支持新建工程','老橋被拆除，新交通線提前數十年完成。',{daily:-1,intervene:2},'old_bridge_removed']]},
+{id:'mirror_fragment',from:2260,to:2270,event:['home','破碎的鏡子','搬家時，你在牆後找到一片被布包著的舊鏡。鏡背刻著一個日期，竟比這棟房子的建造年份還早。',['把鏡片收藏起來','你把鏡片收進盒中。偶爾，你會覺得鏡裡的人慢了半拍。',{anomaly:5,memory:2},'mirror_kept'],['把鏡片埋回牆後','你把牆重新封好，決定不要碰不合理的東西。',{anomaly:-2,daily:2},'mirror_hidden']]},
+{id:'garden_gate',from:2360,to:2370,event:['tower','無人知曉的花園','城市擴建時發現一座沒有登記在任何地圖上的封閉花園。施工隊等著你決定是否先停工調查。',['要求暫停施工','花園被保留下來。調查員在地下找到更早年代的生活痕跡。',{memory:3,intervene:2},'garden_saved'],['讓工程繼續','花園在一週內被夷平，只留下幾張模糊照片。',{daily:2,memory:-2},'garden_lost']]},
+{id:'sleep_archive',from:2480,to:2490,event:['archive','睡眠檔案','新式醫療系統開始保存夢境片段。你的紀錄裡反覆出現一個你從沒去過的房間。',['允許研究員保存','這些夢被收入長期資料庫，成為後世可以找到的證據。',{anomaly:4,memory:4},'dreams_archived'],['要求永久刪除','系統確認刪除。你卻在下一晚再次夢見同一扇門。',{anomaly:3,memory:-1},'dreams_deleted']]},
+{id:'name_registry',from:2600,to:2610,event:['archive','名字的重複','人口資料庫偵測到一個跨越數百年的異常：不同年代的人，留下了幾乎相同的生物特徵。',['私下保存比對結果','你第一次握有可以跨世追查的證據。',{memory:6,anomaly:4},'registry_copy'],['回報為系統錯誤','異常紀錄被自動修正，官方資料恢復正常。',{daily:2,anomaly:-2},'registry_erased']]},
+{id:'memory_law',from:2720,to:2730,event:['work','記憶繼承法案','社會開始爭論：死者的數位記憶，是否能合法留給下一代。你的選擇會影響幾百年後人們如何理解「前世」。',['支持記憶繼承','跨世代記憶庫合法化，私人記憶開始被長期保存。',{memory:4,intervene:3},'memory_inheritance'],['支持遺忘權','大量死者資料被依法清除，世界選擇讓死亡保持終點。',{daily:3,memory:-3},'right_to_forget']]},
+{id:'north_tower_signal',from:2860,to:2870,event:['tower','北塔的訊號','廢棄多年的北塔忽然向城市網路送出一段舊格式訊號。解碼後，第一行竟是你曾用過的名字。',['追蹤訊號來源','你在塔底找到一個不屬於這個年代的資料節點。',{memory:6,anomaly:6,intervene:3},'tower_signal_traced'],['切斷訊號','訊號停止。城市恢復平靜，但那個名字已經留在你腦中。',{daily:2,anomaly:2},'tower_signal_cut']]},
+{id:'last_archive',from:2980,to:2990,event:['archive','最後一份紙本檔案','世界幾乎不再使用紙張。你面前卻有一本跨越近千年的手寫紀錄，第一頁從2026年開始。',['保存到3026年','你把它列為不可銷毀的永久檔案。',{memory:7,intervene:4,anomaly:4},'final_archive_saved'],['讀完後封存','你沒有公開內容，只留下封存指令。',{memory:4,daily:1},'final_archive_sealed']]}
+
 ];
 
 function markExpiredCausalEvents(){
@@ -176,7 +189,7 @@ function markExpiredCausalEvents(){
 function dueCausalEvent(){
  markExpiredCausalEvents();
  for(const c of CAUSAL_EVENTS){
-   if(S.worldEvents[c.id])continue;
+   if(S.worldEvents[c.id]||S.flags['causal_done_'+c.id])continue;
    if(c.life!=null && S.life!==c.life)continue;
    if(S.year>=c.from && S.year<=c.to){
      if(c.id==='maomao_first')return {...c,event:godIntroEvent()};
@@ -228,6 +241,7 @@ function choose(side){
    S.worldEvents[activeCausal.id]={
      status:'resolved',year:S.year,life:S.life,choice:side
    };
+   S.flags['causal_done_'+activeCausal.id]=true;
  }
 
  S.recentEvents=S.recentEvents||[];
@@ -268,7 +282,12 @@ function head(){
 function cleanText(v){
  return String(v??'').replace(/\\n/g,'\n').replace(/\n{3,}/g,'\n\n');
 }
-function image(scene,result=false){const im0=$('img');if(im0)im0.classList.remove('npcHero');let im=result?$('ri'):$('img'),fb=result?$('rf'):$('fallback'),data=builtInFor(scene);if(data){
+const ORIGINAL_CAUSAL_SCENES={'river_help_once':'assets/original_scenes/river_2026.svg','clinic_receipt':'assets/original_scenes/medical_2060.svg','sealed_letter':'assets/original_scenes/archive_2100.svg','bridge_vote':'assets/original_scenes/river_2180.svg','mirror_fragment':'assets/original_scenes/home_2260.svg','garden_gate':'assets/original_scenes/tower_2360.svg','sleep_archive':'assets/original_scenes/archive_2480.svg','name_registry':'assets/original_scenes/archive_2600.svg','memory_law':'assets/original_scenes/work_2720.svg','north_tower_signal':'assets/original_scenes/tower_2860.svg','last_archive':'assets/original_scenes/archive_2980.svg'};
+function image(scene,result=false){const im0=$('img');if(im0)im0.classList.remove('npcHero');
+ const c=typeof dueCausalEvent==='function'?dueCausalEvent():null;
+ if(!result&&c&&ORIGINAL_CAUSAL_SCENES[c.id]){
+   let im=$('img'),fb=$('fallback');im.onload=()=>{im.classList.remove('hidden');fb.classList.add('hidden')};im.onerror=()=>{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'場景'};im.src=ORIGINAL_CAUSAL_SCENES[c.id];return;
+ }let im=result?$('ri'):$('img'),fb=result?$('rf'):$('fallback'),data=builtInFor(scene);if(data){
  im.onerror=()=>{im.classList.add('hidden');fb.classList.remove('hidden');fb.textContent=placeNames[scene]||'生活場景'};
  im.onload=()=>{im.classList.remove('hidden');fb.classList.add('hidden')};
  im.src=data
@@ -337,8 +356,24 @@ function next(){
  save();show()
 }
 function log(){$('log').innerHTML=S.log.length?S.log.map(x=>`<div class="li">第 ${x.day} 日　${x.label}<br>${x.text}</div>`).join(''):'<div class="li">這一世才剛開始。</div>'}
-function past(){$('pastList').innerHTML=S.life===0?'<div class="entry"><p>現在的你沒有「前世」這個概念。</p></div>':S.history.map((x,i)=>`<div class="entry"><strong>第 ${i+1} 世</strong><p>${x.summary}</p></div>`).join('')}
-function causes(){let a=[];if(S.flags.river_help)a.push(['河岸上的援手','第一世，你曾替一個沒有留下姓名的少年付藥錢。']);if(S.flags.woodbox)a.push(['刻痕木盒','第一世，你在舊木盒底留下了一道只有自己認得的刻痕。']);if(S.flags.first_intervention)a.push(['第一次干預','你已經親自踏回第一世存在的年代。']);$('causeList').innerHTML=S.life===0?'<div class="entry"><p>第一世的你不知道什麼是因果。現在做過的事情，只是生活。</p></div>':a.length?a.map(x=>`<div class="entry"><strong>${x[0]}</strong><p>${x[1]}</p></div>`).join(''):'<div class="entry"><p>有些事情還沒有顯示它真正的後果。</p></div>'}
+function past(){
+ if(S.life===0){$('pastList').innerHTML='<div class="entry"><p>現在的你沒有「前世」這個概念。</p></div>';return}
+ $('pastList').innerHTML=(S.history||[]).map((x,i)=>{
+   const name=x.name||'未留下名字';
+   const gender=x.gender?`・${x.gender}`:'';
+   const years=(x.birth!=null&&x.death!=null)?`${x.birth}－${x.death}`:'年代記錄不完整';
+   const cause=x.cause||'死因未記錄';
+   return `<div class="entry"><strong>第 ${i+1} 世・${name}${gender}</strong><p>${years}<br>死因：${cause}</p></div>`;
+ }).join('')||'<div class="entry"><p>尚未留下完整的前世紀錄。</p></div>'
+}
+function causes(){
+ let a=[];const names={'river_help_once':'河岸上的少年','clinic_receipt':'沒有名字的收據','sealed_letter':'寄不出去的信','bridge_vote':'白河橋的表決','mirror_fragment':'破碎的鏡子','garden_gate':'無人知曉的花園','sleep_archive':'睡眠檔案','name_registry':'名字的重複','memory_law':'記憶繼承法案','north_tower_signal':'北塔的訊號','last_archive':'最後一份紙本檔案'};
+ for(const [id,x] of Object.entries(S.worldEvents||{})){
+   if(names[id])a.push([x.year||'某年',names[id],x.status]);
+ }
+ a.sort((x,y)=>(+x[0]||0)-(+y[0]||0));
+ $('causeList').innerHTML=S.life===0?'<div class="entry"><p>第一世的你不知道什麼是因果。現在做過的事情，只是生活。</p></div>':a.length?a.map(x=>`<div class="entry"><strong>${x[1]}</strong><p>${x[0]}・${x[2]==='missed'?'你錯過了這件事。歷史沒有等你。':'已發生。它不會在正常時間線再次出現。'}</p></div>`).join(''):'<div class="entry"><p>有些事情還沒有顯示它真正的後果。</p></div>'
+}</strong><p>${x[1]}</p></div>`).join(''):'<div class="entry"><p>有些事情還沒有顯示它真正的後果。</p></div>'}
 function switchV(v){['game','past','causes'].forEach(x=>$(x).classList.add('hidden'));$(v).classList.remove('hidden');document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.v===v));if(v==='past')past();if(v==='causes')causes()}
 function resetCard(){let c=$('card');c.style.transform='';c.style.opacity=1;$('lp').style.opacity=0;$('rp').style.opacity=0}
 let sx=0,dx=0,drag=false;$('card').addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag=true;sx=e.clientX;dx=0;$('card').setPointerCapture(e.pointerId);$('card').classList.add('drag')});$('card').addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-sx;$('card').style.transform=`translateX(${dx}px) rotate(${dx/28}deg)`;let o=Math.min(Math.abs(dx)/90,1);$('lp').style.opacity=dx<0?o:0;$('rp').style.opacity=dx>0?o:0});$('card').addEventListener('pointerup',()=>{if(!drag)return;drag=false;$('card').classList.remove('drag');if(Math.abs(dx)>85){let side=dx<0?'l':'r';$('card').style.transform=`translateX(${dx<0?-520:520}px) rotate(${dx<0?-12:12}deg)`;$('card').style.opacity=0;setTimeout(()=>choose(side),160)}else resetCard()});
