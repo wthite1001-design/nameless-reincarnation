@@ -373,7 +373,8 @@ function causes(){
  }
  a.sort((x,y)=>(+x[0]||0)-(+y[0]||0));
  $('causeList').innerHTML=S.life===0?'<div class="entry"><p>第一世的你不知道什麼是因果。現在做過的事情，只是生活。</p></div>':a.length?a.map(x=>`<div class="entry"><strong>${x[1]}</strong><p>${x[0]}・${x[2]==='missed'?'你錯過了這件事。歷史沒有等你。':'已發生。它不會在正常時間線再次出現。'}</p></div>`).join(''):'<div class="entry"><p>有些事情還沒有顯示它真正的後果。</p></div>'
-}</strong><p>${x[1]}</p></div>`).join(''):'<div class="entry"><p>有些事情還沒有顯示它真正的後果。</p></div>'}
+}
+
 function switchV(v){['game','past','causes'].forEach(x=>$(x).classList.add('hidden'));$(v).classList.remove('hidden');document.querySelectorAll('.nav').forEach(b=>b.classList.toggle('active',b.dataset.v===v));if(v==='past')past();if(v==='causes')causes()}
 function resetCard(){let c=$('card');c.style.transform='';c.style.opacity=1;$('lp').style.opacity=0;$('rp').style.opacity=0}
 let sx=0,dx=0,drag=false;$('card').addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;drag=true;sx=e.clientX;dx=0;$('card').setPointerCapture(e.pointerId);$('card').classList.add('drag')});$('card').addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-sx;$('card').style.transform=`translateX(${dx}px) rotate(${dx/28}deg)`;let o=Math.min(Math.abs(dx)/90,1);$('lp').style.opacity=dx<0?o:0;$('rp').style.opacity=dx>0?o:0});$('card').addEventListener('pointerup',()=>{if(!drag)return;drag=false;$('card').classList.remove('drag');if(Math.abs(dx)>85){let side=dx<0?'l':'r';$('card').style.transform=`translateX(${dx<0?-520:520}px) rotate(${dx<0?-12:12}deg)`;$('card').style.opacity=0;setTimeout(()=>choose(side),160)}else resetCard()});
