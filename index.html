@@ -476,7 +476,7 @@ let audioCtx=null,musicMaster=null,musicTimer=null,musicOn=true,musicMood='life'
 function ensureMusic(){
  if(!musicOn)return;
  try{
-  if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();musicMaster=audioCtx.createGain();musicMaster.gain.value=.055*musicVolume;musicMaster.connect(audioCtx.destination);scheduleMusic()}
+  if(!audioCtx){audioCtx=new (window.AudioContext||window.webkitAudioContext)();musicMaster=audioCtx.createGain();musicMaster.gain.value=.24*musicVolume;musicMaster.connect(audioCtx.destination);scheduleMusic();playMusicNote()}
   if(audioCtx.state==='suspended'&&!document.hidden)audioCtx.resume();
  }catch(e){}
 }
@@ -485,15 +485,23 @@ function tone(freq,dur=.9,vol=.18,type='sine'){
  const o=audioCtx.createOscillator(),g=audioCtx.createGain(),now=audioCtx.currentTime;
  o.type=type;o.frequency.value=freq;g.gain.setValueAtTime(0,now);g.gain.linearRampToValueAtTime(vol,now+.06);g.gain.exponentialRampToValueAtTime(.001,now+dur);o.connect(g);g.connect(musicMaster);o.start(now);o.stop(now+dur+.05)
 }
+function playMusicNote(){
+ if(!musicOn||!audioCtx||document.hidden)return;
+ const life=[220,277.18,329.63,415.30,329.63,277.18,246.94,329.63];
+ const death=[110,130.81,146.83,123.47,98,116.54,103.83,87.31];
+ const seq=musicMood==='death'?death:life,f=seq[musicStep++%seq.length];
+ tone(f,musicMood==='death'?1.8:1.35,musicMood==='death'?.22:.28,musicMood==='death'?'triangle':'sine');
+ tone(f/2,2.4,musicMood==='death'?.09:.12,'sine');
+}
 function scheduleMusic(){
  clearInterval(musicTimer);
  const life=[220,277.18,329.63,415.30,329.63,277.18,246.94,329.63];
  const death=[110,130.81,146.83,123.47,98,116.54,103.83,87.31];
- musicTimer=setInterval(()=>{if(!musicOn||!audioCtx||document.hidden)return;const seq=musicMood==='death'?death:life;const f=seq[musicStep++%seq.length];tone(f,musicMood==='death'?1.8:1.25,musicMood==='death'?.11:.13,musicMood==='death'?'triangle':'sine');if(musicStep%2===0)tone(f/2,2.2,.055,'sine')},musicMood==='death'?1150:820)
+ musicTimer=setInterval(playMusicNote,musicMood==='death'?1150:820)
 }
-function setMusicMood(m){musicMood=m;if(audioCtx){scheduleMusic();if(m==='death'){musicMaster.gain.cancelScheduledValues(audioCtx.currentTime);musicMaster.gain.setTargetAtTime(.035*musicVolume,audioCtx.currentTime,.2)}else musicMaster.gain.setTargetAtTime(.055*musicVolume,audioCtx.currentTime,.3)}}
-function updateMusicButton(){$('musicToggle').textContent=musicOn?'♫ 音樂':'♩ 靜音'}
-$('musicToggle').onclick=()=>{musicOn=!musicOn;updateMusicButton();if(musicOn)ensureMusic();else if(audioCtx&&musicMaster)musicMaster.gain.setTargetAtTime(.0001,audioCtx.currentTime,.08)};
+function setMusicMood(m){musicMood=m;if(audioCtx){scheduleMusic();if(m==='death'){musicMaster.gain.cancelScheduledValues(audioCtx.currentTime);musicMaster.gain.setTargetAtTime(.16*musicVolume,audioCtx.currentTime,.2)}else musicMaster.gain.setTargetAtTime(.24*musicVolume,audioCtx.currentTime,.3)}}
+function updateMusicButton(){$('musicToggle').textContent=musicOn?'♫ 播放中':'♫ 開啟音樂';$('musicToggle').setAttribute('aria-pressed',musicOn?'true':'false')}
+$('musicToggle').onclick=()=>{musicOn=!musicOn;updateMusicButton();if(musicOn){ensureMusic();playMusicNote()}else if(audioCtx&&musicMaster)musicMaster.gain.setTargetAtTime(.0001,audioCtx.currentTime,.08)};
 updateMusicButton();
 const volumeEl=$('musicVolume');
 if(volumeEl){
